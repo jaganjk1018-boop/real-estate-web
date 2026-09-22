@@ -1,0 +1,73 @@
+export const AGENTS_DATA = [
+  {
+    id: 'agent-1',
+    name: 'Alexander Sterling',
+    title: 'Managing Principal & Luxury Estates Director',
+    phone: '+1 (415) 890-2341',
+    email: 'alexander.s@aurarealty.com',
+    whatsapp: '14158902341',
+    photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80',
+    rating: 4.98,
+    dealsClosed: 142,
+    experienceYears: 14,
+    languages: ['English', 'French', 'German']
+  },
+  {
+    id: 'agent-2',
+    name: 'Elena Rostova',
+    title: 'Senior Waterfront & Penthouse Specialist',
+    phone: '+1 (305) 782-9014',
+    email: 'elena.rostova@aurarealty.com',
+    whatsapp: '13057829014',
+    photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80',
+    rating: 4.95,
+    dealsClosed: 98,
+    experienceYears: 9,
+    languages: ['English', 'Spanish', 'Russian']
+  },
+  {
+    id: 'agent-3',
+    name: 'Marcus Vance',
+    title: 'Commercial Real Estate & Investment Advisory',
+    phone: '+1 (212) 651-4098',
+    email: 'marcus.vance@aurarealty.com',
+    whatsapp: '12126514098',
+    photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=800&q=80',
+    rating: 4.92,
+    dealsClosed: 115,
+    experienceYears: 11,
+    languages: ['English', 'Mandarin']
+  },
+  {
+    id: 'agent-4',
+    name: 'Sophia Chen',
+    title: 'Modern Architecture & Eco-Villa Consultant',
+    phone: '+1 (310) 943-2190',
+    email: 'sophia.chen@aurarealty.com',
+    whatsapp: '13109432190',
+    photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80',
+    rating: 4.97,
+    dealsClosed: 84,
+    experienceYears: 8,
+    languages: ['English', 'Japanese', 'Cantonese']
+  },
+  {
+    id: 'agent-5',
+    name: 'R. Senthil Nathan',
+    title: 'Principal Broker & Land Title Expert',
+    agency: 'Premier Chennai Land Assets',
+    phone: '+91 98401 28941',
+    email: 'senthil.nathan@aurarealty.com',
+    whatsapp: '919840128941',
+    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
+    rating: 4.98,
+    reviewCount: 58,
+    dealsClosed: 182,
+    experienceYears: 14,
+    isVerified: true,
+    verifiedBadge: true,
+    licenseNo: 'TN/RERA/AGT/0482/2021',
+    specialties: ['DTCP/CMDA Layouts', 'Patta & Title Search', 'High-Growth Plotted Corridors'],
+    languages: ['Tamil', 'English', 'Telugu']
+  }
+];

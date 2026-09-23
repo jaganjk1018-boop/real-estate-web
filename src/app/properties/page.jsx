@@ -43,6 +43,7 @@ function PropertiesContent() {
   const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [selectedType, setSelectedType] = useState(initialType);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+  const [selectedRegion, setSelectedRegion] = useState('all');
   const [minPrice, setMinPrice] = useState(initialMinPrice);
   const [maxPrice, setMaxPrice] = useState(initialMaxPrice);
   const [bedrooms, setBedrooms] = useState(initialBeds);
@@ -78,6 +79,7 @@ function PropertiesContent() {
     setSearchQuery('');
     setSelectedType('all');
     setSelectedCategory('all');
+    setSelectedRegion('all');
     setMinPrice(0);
     setMaxPrice(30000000);
     setBedrooms('all');
@@ -91,6 +93,43 @@ function PropertiesContent() {
     return properties.filter((prop) => {
       // Favorites filter
       if (onlyFavorites && !favorites.includes(prop.id)) return false;
+
+      // Regional & State filter
+      if (selectedRegion !== 'all') {
+        const country = (prop.address?.country || '').toLowerCase();
+        const state = (prop.address?.state || '').toLowerCase();
+        const city = (prop.address?.city || '').toLowerCase();
+
+        if (selectedRegion === 'india') {
+          if (country !== 'india' && !prop.isLand) return false;
+        } else if (selectedRegion === 'maharashtra') {
+          if (!state.includes('maharashtra') && !city.includes('mumbai')) return false;
+        } else if (selectedRegion === 'karnataka') {
+          if (!state.includes('karnataka') && !city.includes('bengaluru') && !city.includes('bangalore')) return false;
+        } else if (selectedRegion === 'delhi') {
+          if (!state.includes('delhi') && !city.includes('delhi')) return false;
+        } else if (selectedRegion === 'tamilnadu') {
+          if (!state.includes('tamil nadu') && !city.includes('chennai') && !prop.isLand) return false;
+        } else if (selectedRegion === 'telangana') {
+          if (!state.includes('telangana') && !city.includes('hyderabad')) return false;
+        } else if (selectedRegion === 'goa') {
+          if (!state.includes('goa') && !city.includes('candolim')) return false;
+        } else if (selectedRegion === 'kerala') {
+          if (!state.includes('kerala') && !city.includes('kochi')) return false;
+        } else if (selectedRegion === 'rajasthan') {
+          if (!state.includes('rajasthan') && !city.includes('udaipur')) return false;
+        } else if (selectedRegion === 'gujarat') {
+          if (!state.includes('gujarat') && !city.includes('ahmedabad')) return false;
+        } else if (selectedRegion === 'california') {
+          if (!city.includes('los angeles') && !city.includes('beverly') && !city.includes('san francisco')) return false;
+        } else if (selectedRegion === 'newyork') {
+          if (!city.includes('new york')) return false;
+        } else if (selectedRegion === 'florida') {
+          if (!city.includes('miami')) return false;
+        } else if (selectedRegion === 'colorado') {
+          if (!city.includes('aspen')) return false;
+        }
+      }
 
       // Type filter (buy, rent, commercial, residential, land)
       if (selectedType !== 'all') {
@@ -121,14 +160,16 @@ function PropertiesContent() {
         if (!hasAll) return false;
       }
 
-      // Search Query filter (matches title, city, neighborhood, description)
+      // Search Query filter (matches title, city, state, country, neighborhood, description)
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         const matchesTitle = prop.title.toLowerCase().includes(q);
-        const matchesCity = prop.address.city.toLowerCase().includes(q);
-        const matchesNeighborhood = prop.address.neighborhood.toLowerCase().includes(q);
+        const matchesCity = prop.address?.city?.toLowerCase()?.includes(q);
+        const matchesState = prop.address?.state?.toLowerCase()?.includes(q);
+        const matchesCountry = prop.address?.country?.toLowerCase()?.includes(q);
+        const matchesNeighborhood = prop.address?.neighborhood?.toLowerCase()?.includes(q);
         const matchesCategory = prop.category.toLowerCase().includes(q);
-        if (!matchesTitle && !matchesCity && !matchesNeighborhood && !matchesCategory) {
+        if (!matchesTitle && !matchesCity && !matchesState && !matchesCountry && !matchesNeighborhood && !matchesCategory) {
           return false;
         }
       }
@@ -146,6 +187,7 @@ function PropertiesContent() {
     properties,
     favorites,
     onlyFavorites,
+    selectedRegion,
     selectedType,
     selectedCategory,
     minPrice,
@@ -335,6 +377,42 @@ function PropertiesContent() {
 
         </div>
 
+      </div>
+
+      {/* State & Regional Quick Filter Chips */}
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500 shrink-0 mr-1 flex items-center gap-1">
+          <MapPin className="w-3.5 h-3.5 text-[#D4AF37]" /> Region:
+        </span>
+        {[
+          { id: 'all', label: 'All Regions' },
+          { id: 'india', label: '🇮🇳 All India (Trophy Estates)' },
+          { id: 'maharashtra', label: '🏙️ Mumbai' },
+          { id: 'karnataka', label: '🌿 Bengaluru' },
+          { id: 'delhi', label: '🏛️ Delhi NCR' },
+          { id: 'tamilnadu', label: '🌊 Tamil Nadu' },
+          { id: 'telangana', label: '💎 Hyderabad' },
+          { id: 'goa', label: '🏖️ Goa' },
+          { id: 'kerala', label: '🌴 Kerala' },
+          { id: 'rajasthan', label: '👑 Rajasthan' },
+          { id: 'gujarat', label: '⚡ Gujarat' },
+          { id: 'california', label: '🌴 California' },
+          { id: 'newyork', label: '🗽 New York' },
+          { id: 'florida', label: '🏖️ Florida' },
+          { id: 'colorado', label: '🏔️ Colorado' }
+        ].map((chip) => (
+          <button
+            key={chip.id}
+            onClick={() => setSelectedRegion(chip.id)}
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border cursor-pointer ${
+              selectedRegion === chip.id
+                ? 'bg-[#1E3A5F] text-white font-bold border-[#1E3A5F] shadow-sm'
+                : 'bg-white text-gray-600 border-gray-200 hover:text-[#1E3A5F] hover:border-[#D4AF37]'
+            }`}
+          >
+            {chip.label}
+          </button>
+        ))}
       </div>
 
       {/* Expandable Granular Filter Drawer */}

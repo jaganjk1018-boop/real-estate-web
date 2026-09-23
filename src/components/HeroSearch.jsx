@@ -226,7 +226,12 @@ export default function HeroSearch({ onOpenAIWizard }) {
                   <option value="Los Angeles" className="bg-white text-[#1F2937]">Los Angeles / Bel-Air</option>
                   <option value="New York" className="bg-white text-[#1F2937]">New York / Manhattan</option>
                   <option value="Miami" className="bg-white text-[#1F2937]">Miami / Biscayne Bay</option>
-                  <option value="Chennai" className="bg-white text-[#1F2937]">Chennai / Tambaram</option>
+                  <option value="Mumbai" className="bg-white text-[#1F2937]">Mumbai / Worli & Bandra</option>
+                  <option value="Bengaluru" className="bg-white text-[#1F2937]">Bengaluru / Indiranagar</option>
+                  <option value="Delhi" className="bg-white text-[#1F2937]">New Delhi / Lutyens NCR</option>
+                  <option value="Chennai" className="bg-white text-[#1F2937]">Chennai / ECR & Tambaram</option>
+                  <option value="Hyderabad" className="bg-white text-[#1F2937]">Hyderabad / Jubilee Hills</option>
+                  <option value="Goa" className="bg-white text-[#1F2937]">Goa / Beachfront</option>
                   <option value="San Francisco" className="bg-white text-[#1F2937]">Silicon Valley</option>
                 </select>
                 <ChevronDown className="w-3.5 h-3.5 text-[#D4AF37] absolute right-0 pointer-events-none stroke-[2.5]" />

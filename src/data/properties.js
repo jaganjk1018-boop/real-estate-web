@@ -860,5 +860,717 @@ export const PROPERTIES_DATA = [
 
     agent: AGENTS_DATA[4], // R. Senthil Nathan
     createdAt: '2026-03-01'
+  },
+  {
+    id: 'prop-14',
+    title: 'The Worli Sea Face Sky-Palace',
+    slug: 'the-worli-sea-face-sky-palace',
+    tagline: 'Triplex Crown Sky-Palace with direct Bandra-Worli Sea Link & Arabian Sea vistas',
+    description: 'Rising 72 floors above Worli Sea Face, this ultra-exclusive 10,200 sq.ft triplex penthouse represents the absolute pinnacle of Mumbai luxury real estate. Offering sweeping 270-degree panoramic sunset views of the Arabian Sea and the iconic illuminated Bandra-Worli Sea Link. Features a private high-speed elevator opening directly into a double-height grand salon, private heated rooftop pool, temperature-controlled champagne cellar, imported Statuario marble slabs, and an expansive cantilevered observation deck.',
+    price: 650000000,
+    originalPrice: 700000000,
+    currency: '₹',
+    type: 'buy',
+    category: 'Duplex Penthouse',
+    status: 'For Sale',
+    isFeatured: true,
+    isVerified: true,
+    isHot: true,
+    rating: 5.0,
+    reviewCount: 29,
+    bedrooms: 5,
+    bathrooms: 7,
+    areaSqFt: 10200,
+    garages: 4,
+    yearBuilt: 2025,
+    address: {
+      street: 'Worli Sea Face South Pier',
+      neighborhood: 'Worli',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+      zipCode: '400030',
+      country: 'India',
+      lat: 19.0176,
+      lng: 72.8174
+    },
+    images: [
+      '/images/properties/mumbai-sky-palace.jpg',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85'
+    ],
+    virtualTourRooms: [
+      {
+        id: 'room-sea-salon',
+        name: 'Grand Sea Link Salon & Terrace',
+        panoramaUrl: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2000&q=90',
+        description: 'Double-height glass hall overlooking the Bandra-Worli Sea Link and Arabian Sea golden hour.'
+      },
+      {
+        id: 'room-rooftop-pool',
+        name: 'Private Sky Infinity Pool & Deck',
+        panoramaUrl: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2000&q=90',
+        description: 'Heated open-air infinity pool floating 700 feet above the Mumbai shoreline.'
+      }
+    ],
+    amenities: [
+      'Bandra-Worli Sea Link Views',
+      'Private Rooftop Infinity Pool',
+      'Dedicated High-Speed Biometric Elevator',
+      '4 Covered Valet Car Parks',
+      '24/7 Concierge & White-Glove Security',
+      'Temperature Controlled Wine Cellar',
+      'Imported Italian Statuario Marble',
+      'Automated VRV Air Conditioning'
+    ],
+    nearby: [
+      { name: 'Four Seasons Luxury Hotel & Rooftop', distance: '1.2 km', type: 'Hospitality', rating: 4.9 },
+      { name: 'Mahalaxmi Racecourse & Polo Club', distance: '2.5 km', type: 'Sports', rating: 4.8 },
+      { name: 'High Street Phoenix & Palladium Luxury Mall', distance: '1.8 km', type: 'Shopping', rating: 5.0 },
+      { name: 'Bandra-Worli Sea Link Toll Entrance', distance: '800 m', type: 'Highway', rating: 4.9 },
+      { name: 'Sir H. N. Reliance Foundation Hospital', distance: '4.2 km', type: 'Hospital', rating: 4.9 }
+    ],
+    legalSection: {
+      ecStatus: '30-Year Nil Encumbrance Verified by Crawford Bayley & Co.',
+      reraNumber: 'P51900084910 (MahaRERA)',
+      ownershipVerification: '100% Freehold Conveyed Title Deed'
+    },
+    areaInsights: {
+      areaName: 'Worli Sea Face, Mumbai',
+      areaAvgPriceSqFt: 63700,
+      last1YearGrowth: 14.8,
+      demandScore: 9.9,
+      investmentScore: 9.6
+    },
+    agent: AGENTS_DATA[1],
+    createdAt: '2026-03-05'
+  },
+  {
+    id: 'prop-15',
+    title: 'The Indiranagar Zen Villa & Garden Estate',
+    slug: 'the-indiranagar-zen-villa-garden-estate',
+    tagline: 'Biophilic architectural masterwork with private koi pond & pool in prime Indiranagar',
+    description: 'Conceived by award-winning tropical modern architects, this 7,800 sq.ft private bungalow estate in Bangalore’s most prestigious postal code seamlessly blends indoor and outdoor luxury. Features a central water courtyard with Japanese koi pond, floating granite stepping stones, double-height living spaces framed by teak louvers, private lap pool, solar-integrated passive ventilation, smart Lutron lighting, and subterranean private speakeasy lounge.',
+    price: 285000000,
+    originalPrice: 310000000,
+    currency: '₹',
+    type: 'buy',
+    category: 'Luxury Villa',
+    status: 'For Sale',
+    isFeatured: true,
+    isVerified: true,
+    isHot: true,
+    rating: 4.97,
+    reviewCount: 34,
+    bedrooms: 5,
+    bathrooms: 6,
+    areaSqFt: 7800,
+    garages: 3,
+    yearBuilt: 2024,
+    address: {
+      street: '12th Main Road, Defense Colony',
+      neighborhood: 'Indiranagar',
+      city: 'Bengaluru',
+      state: 'Karnataka',
+      zipCode: '560038',
+      country: 'India',
+      lat: 12.9784,
+      lng: 77.6408
+    },
+    images: [
+      '/images/properties/bangalore-zen-villa.jpg',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1600&q=85'
+    ],
+    virtualTourRooms: [
+      {
+        id: 'room-zen-pond',
+        name: 'Central Water Court & Koi Pond',
+        panoramaUrl: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90',
+        description: 'Landscaped open-sky courtyard with cascading fountains, tropical vertical green wall, and floating stone paths.'
+      },
+      {
+        id: 'room-living-pavilion',
+        name: 'Double-Height Living Pavilion',
+        panoramaUrl: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=90',
+        description: 'Open living room with bespoke Burma teak louvers and floor-to-ceiling sliding glass facade.'
+      }
+    ],
+    amenities: [
+      'Private Japanese Koi Pond Courtyard',
+      'Heated Outdoor Lap Pool & Jacuzzi',
+      'Lutron Smart Automation System',
+      'Solar Rooftop Grid with Tesla Powerwall Backup',
+      'Subterranean Private Wine & Speakeasy Bar',
+      'BBMP A-Khata Freehold Clear Title',
+      'EV Fast Charging Stations',
+      'Italian Marble & Natural Teak Finishes'
+    ],
+    nearby: [
+      { name: 'Indiranagar 100ft Road Gourmet Corridor', distance: '300 m', type: 'Lifestyle', rating: 4.9 },
+      { name: 'Embassy GolfLinks Business Park', distance: '3.2 km', type: 'Tech Park', rating: 4.8 },
+      { name: 'Manipal Multi-Specialty Hospital', distance: '1.4 km', type: 'Hospital', rating: 4.9 },
+      { name: 'Indiranagar Metro Station (Purple Line)', distance: '850 m', type: 'Transit', rating: 4.7 },
+      { name: 'Kempegowda International Airport Link (KIAL)', distance: '36 km', type: 'Airport', rating: 4.8 }
+    ],
+    legalSection: {
+      ecStatus: '35-Year Nil Encumbrance Certified by King & Partridge',
+      reraNumber: 'PRM/KA/RERA/1251/2024',
+      ownershipVerification: 'BBMP A-Khata Registered • Zero Discrepancy Freehold Title'
+    },
+    areaInsights: {
+      areaName: 'Indiranagar, Bengaluru',
+      areaAvgPriceSqFt: 36500,
+      last1YearGrowth: 16.4,
+      demandScore: 9.7,
+      investmentScore: 9.3
+    },
+    agent: AGENTS_DATA[3],
+    createdAt: '2026-03-08'
+  },
+  {
+    id: 'prop-16',
+    title: 'The Lutyens Heritage Regal Mansion',
+    slug: 'the-lutyens-heritage-regal-mansion',
+    tagline: 'Stately neoclassical colonial estate with sprawling 1.2-acre private lawns in Golf Links',
+    description: 'An aristocratic residence of historic distinction in the tightly held Lutyens Bungalow Zone of New Delhi. Spanning 1.2 acres of verdant lawns with century-old heritage trees, this palatial colonial estate showcases grand Roman colonnades, neoclassical dome architecture, Belgian crystal chandeliers, private banquet ballroom, high-security embassy-grade perimeter walls, separate staff quarters, and cobblestone porte-cochère driveway.',
+    price: 1250000000,
+    originalPrice: 1350000000,
+    currency: '₹',
+    type: 'buy',
+    category: 'Historic Manor',
+    status: 'For Sale',
+    isFeatured: true,
+    isVerified: true,
+    isHot: true,
+    rating: 5.0,
+    reviewCount: 19,
+    bedrooms: 8,
+    bathrooms: 10,
+    areaSqFt: 14500,
+    garages: 6,
+    yearBuilt: 2023,
+    address: {
+      street: 'Golf Links Boulevard, Lutyens Zone',
+      neighborhood: 'Golf Links',
+      city: 'New Delhi',
+      state: 'Delhi NCR',
+      zipCode: '110003',
+      country: 'India',
+      lat: 28.5983,
+      lng: 77.2346
+    },
+    images: [
+      '/images/properties/delhi-lutyens-mansion.jpg',
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85'
+    ],
+    virtualTourRooms: [
+      {
+        id: 'room-colonnade',
+        name: 'Grand Neoclassical Facade & Driveway',
+        panoramaUrl: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=2000&q=90',
+        description: 'Colonnade porch with classical Roman pillars and circular cobblestone entrance.'
+      },
+      {
+        id: 'room-banquet',
+        name: 'State Dining Hall & Library',
+        panoramaUrl: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2000&q=90',
+        description: 'Gilded 20ft ceiling hall with antique crystal chandeliers and private cedar library.'
+      }
+    ],
+    amenities: [
+      '1.2-Acre Private Manicured Lawns',
+      'Heritage Neoclassical Architecture',
+      'Embassy-Grade Perimeter Security',
+      'Cobblestone Porte-Cochère & 6-Car Port',
+      'Grand Ballroom & State Dining Hall',
+      'Century-Old Banyan & Neem Shade Canopies',
+      'Detached 8-Room Service & Security Quarters',
+      'L&DO Clear Freehold Title'
+    ],
+    nearby: [
+      { name: 'Delhi Golf Club (18-Hole Championship Course)', distance: '400 m', type: 'Sports', rating: 5.0 },
+      { name: 'Khan Market Gourmet & Diplomatic Boutiques', distance: '900 m', type: 'Shopping', rating: 4.9 },
+      { name: 'Lodhi Gardens Heritage Walking Park', distance: '1.5 km', type: 'Park', rating: 5.0 },
+      { name: 'India Gate & Central Vista Avenue', distance: '2.1 km', type: 'Landmark', rating: 5.0 },
+      { name: 'Indira Gandhi International Airport (DEL)', distance: '14 km', type: 'Airport', rating: 4.8 }
+    ],
+    legalSection: {
+      ecStatus: '50-Year Verified Sovereign Title by Shardul Amarchand Mangaldas',
+      reraNumber: 'DLRERA2024H8912',
+      ownershipVerification: 'L&DO Freehold Converted • Nil Litigation Guarantee'
+    },
+    areaInsights: {
+      areaName: 'Golf Links, Lutyens New Delhi',
+      areaAvgPriceSqFt: 86000,
+      last1YearGrowth: 12.5,
+      demandScore: 10.0,
+      investmentScore: 9.8
+    },
+    agent: AGENTS_DATA[0],
+    createdAt: '2026-03-02'
+  },
+  {
+    id: 'prop-17',
+    title: 'The Jubilee Hills Kohinoor Villa',
+    slug: 'the-jubilee-hills-kohinoor-villa',
+    tagline: 'Hilltop architectural sanctuary with infinity pool & Durgam Cheruvu skyline views',
+    description: 'Perched on an elevated crest on Road No. 36 Jubilee Hills, this 9,400 sq.ft ultra-luxury residence commands breathtaking sunset views over Hyderabad’s IT skyline and Durgam Cheruvu lake. Engineered with Italian travertine stone, double-cantilevered balconies, temperature-controlled infinity pool, home theater with Dolby Atmos, elevator connecting 4 levels, and private roof garden.',
+    price: 380000000,
+    originalPrice: 410000000,
+    currency: '₹',
+    type: 'buy',
+    category: 'Luxury Villa',
+    status: 'For Sale',
+    isFeatured: true,
+    isVerified: true,
+    isHot: true,
+    rating: 4.96,
+    reviewCount: 22,
+    bedrooms: 6,
+    bathrooms: 7,
+    areaSqFt: 9400,
+    garages: 4,
+    yearBuilt: 2024,
+    address: {
+      street: 'Road No. 36, Hill Crest Drive',
+      neighborhood: 'Jubilee Hills',
+      city: 'Hyderabad',
+      state: 'Telangana',
+      zipCode: '500033',
+      country: 'India',
+      lat: 17.4319,
+      lng: 78.4073
+    },
+    images: [
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=85'
+    ],
+    virtualTourRooms: [
+      {
+        id: 'room-view-deck',
+        name: 'Hill-Crest Infinity Terrace',
+        panoramaUrl: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=2000&q=90',
+        description: 'Cantilevered infinity deck facing the illuminated Durgam Cheruvu cable bridge and HITEC City skyline.'
+      }
+    ],
+    amenities: [
+      'Panoramic City & Lake Views',
+      'Heated Hilltop Infinity Pool',
+      'Otis 8-Passenger Biometric Glass Elevator',
+      'Dolby Atmos 12-Seat 4K Private Cinema',
+      'Italian Travertine Stone Cladding',
+      'Full Solar Generation with Inverter Bank',
+      'GHMC Approved Sanctioned Layout',
+      'Dedicated Maid & Driver Quarters'
+    ],
+    nearby: [
+      { name: 'Durgam Cheruvu Cable-Stayed Bridge', distance: '1.2 km', type: 'Landmark', rating: 4.9 },
+      { name: 'KBR National Park Nature Reserve', distance: '1.8 km', type: 'Park', rating: 4.8 },
+      { name: 'Apollo Health City Multi-Specialty', distance: '2.4 km', type: 'Hospital', rating: 4.9 },
+      { name: 'Inorbit Mall Cyberabad', distance: '3.1 km', type: 'Shopping', rating: 4.7 },
+      { name: 'Rajiv Gandhi International Airport (HYD)', distance: '32 km', type: 'Airport', rating: 4.9 }
+    ],
+    legalSection: {
+      ecStatus: '35-Year Nil Encumbrance Certified by High Court Advocates',
+      reraNumber: 'TSRERA2024V9812',
+      ownershipVerification: 'GHMC Approved Freehold Patta Deed'
+    },
+    areaInsights: {
+      areaName: 'Jubilee Hills, Hyderabad',
+      areaAvgPriceSqFt: 40400,
+      last1YearGrowth: 17.2,
+      demandScore: 9.8,
+      investmentScore: 9.4
+    },
+    agent: AGENTS_DATA[2],
+    createdAt: '2026-03-10'
+  },
+  {
+    id: 'prop-18',
+    title: 'The Candolim Azure Beachfront Villa',
+    slug: 'the-candolim-azure-beachfront-villa',
+    tagline: 'Portuguese-modernist coastal sanctuary with direct Arabian Sea beach access in North Goa',
+    description: 'Immersed in a private 1-acre coconut palm grove directly on Candolim beach, this 6,800 sq.ft beachfront estate seamlessly combines traditional Goan-Portuguese architecture with modern European minimalism. Featuring laterite stone walls, high timber-vaulted ceilings, open-concept outdoor living pavilion, infinity pool overlooking golden sands, and private direct gate to the Arabian Sea.',
+    price: 185000000,
+    originalPrice: 200000000,
+    currency: '₹',
+    type: 'buy',
+    category: 'Waterfront Estate',
+    status: 'For Sale',
+    isFeatured: true,
+    isVerified: true,
+    isHot: true,
+    rating: 4.98,
+    reviewCount: 31,
+    bedrooms: 5,
+    bathrooms: 6,
+    areaSqFt: 6800,
+    garages: 3,
+    yearBuilt: 2024,
+    address: {
+      street: 'Sinquerim Beach Road',
+      neighborhood: 'Candolim Coast',
+      city: 'Candolim',
+      state: 'Goa',
+      zipCode: '403515',
+      country: 'India',
+      lat: 15.5186,
+      lng: 73.7626
+    },
+    images: [
+      'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85'
+    ],
+    virtualTourRooms: [
+      {
+        id: 'room-beach-veranda',
+        name: 'Open Veranda & Palm Pool',
+        panoramaUrl: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=2000&q=90',
+        description: 'Deep shaded veranda opening into the pool and private beach access path.'
+      }
+    ],
+    amenities: [
+      'Direct Private Beachfront Access',
+      '1-Acre Mature Coconut Palm Grove',
+      'Saltwater Infinity Swimming Pool',
+      'Portuguese Heritage Laterite Architecture',
+      'Open-Air Culinary Alfresco Pavilion',
+      'Full Power Backup & Desalination Plant',
+      'Goa CRZ Clearance Verified',
+      'High-Speed Satellite Internet'
+    ],
+    nearby: [
+      { name: 'Candolim Beach Water Sports & Cafes', distance: '50 m', type: 'Beach', rating: 4.9 },
+      { name: 'Fort Aguada Historic Lighthouse & Marina', distance: '1.8 km', type: 'Landmark', rating: 4.8 },
+      { name: 'Taj Fort Aguada Resort & Spa', distance: '1.2 km', type: 'Hospitality', rating: 4.9 },
+      { name: 'Manohar International Airport, Mopa (GOX)', distance: '38 km', type: 'Airport', rating: 4.8 },
+      { name: 'Dabolim International Airport (GOI)', distance: '36 km', type: 'Airport', rating: 4.7 }
+    ],
+    legalSection: {
+      ecStatus: '30-Year Freehold Nil Encumbrance Certified by Goa Bar Advocates',
+      reraNumber: 'GOARERA092491',
+      ownershipVerification: 'Goa Coastal Zone Management Authority (GCZMA) Verified NOC'
+    },
+    areaInsights: {
+      areaName: 'Candolim Coast, North Goa',
+      areaAvgPriceSqFt: 27200,
+      last1YearGrowth: 19.5,
+      demandScore: 9.6,
+      investmentScore: 9.5
+    },
+    agent: AGENTS_DATA[1],
+    createdAt: '2026-03-11'
+  },
+  {
+    id: 'prop-19',
+    title: 'The Vembanad Lakefront Palms Sanctuary',
+    slug: 'the-vembanad-lakefront-palms-sanctuary',
+    tagline: 'Waterfront Kerala Nalukettu estate with private yacht marina slip on Vembanad Lake',
+    description: 'An idyllic 2.2-acre private peninsula estate on the tranquil backwaters of Vembanad Lake. Designed in harmony with classical Kerala Nalukettu architecture featuring teakwood pillars, brass accents, open central Nadumuttam courtyard, modern air-conditioned suites, infinity pool merging with the lake horizon, and private wooden boardwalk with motor yacht mooring jetty.',
+    price: 145000000,
+    originalPrice: 155000000,
+    currency: '₹',
+    type: 'buy',
+    category: 'Waterfront Estate',
+    status: 'For Sale',
+    isFeatured: true,
+    isVerified: true,
+    rating: 4.95,
+    reviewCount: 18,
+    bedrooms: 5,
+    bathrooms: 6,
+    areaSqFt: 7200,
+    garages: 3,
+    yearBuilt: 2023,
+    address: {
+      street: 'Lakefront Peninsula Drive',
+      neighborhood: 'Kumarakom - Kochi Corridor',
+      city: 'Kochi',
+      state: 'Kerala',
+      zipCode: '686563',
+      country: 'India',
+      lat: 9.6175,
+      lng: 76.4300
+    },
+    images: [
+      'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1600&q=85'
+    ],
+    virtualTourRooms: [
+      {
+        id: 'room-nadumuttam',
+        name: 'Central Courtyard (Nadumuttam)',
+        panoramaUrl: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=2000&q=90',
+        description: 'Open-to-sky raindrops courtyard framed by carved Anjili teak pillars and brass oil lamps.'
+      }
+    ],
+    amenities: [
+      '2.2-Acre Private Backwater Peninsula',
+      'Deep-Water Motor Yacht Mooring Jetty',
+      'Traditional Kerala Nadumuttam Architecture',
+      'Infinity Pool Merging with Lake Horizon',
+      'Ayurvedic Wellness Spa Pavilion',
+      'Solar Powered Eco-Estate Design',
+      'Organic Tropical Fruit & Spice Garden',
+      'Inland Waterways Authority Clear NOC'
+    ],
+    nearby: [
+      { name: 'Kumarakom Bird Sanctuary Nature Reserve', distance: '1.5 km', type: 'Park', rating: 4.8 },
+      { name: 'Kochi Marine Drive Promenade', distance: '38 km', type: 'Lifestyle', rating: 4.7 },
+      { name: 'Aster Medcity Multi-Specialty Hospital', distance: '42 km', type: 'Hospital', rating: 4.9 },
+      { name: 'Cochin International Airport (COK)', distance: '72 km', type: 'Airport', rating: 4.8 }
+    ],
+    legalSection: {
+      ecStatus: '40-Year Freehold Title Verified by Menon & Pai Associates',
+      reraNumber: 'K-RERA/PRJ/2024/091',
+      ownershipVerification: 'Clear Agricultural to Residential Conversion & Freehold Patta'
+    },
+    areaInsights: {
+      areaName: 'Vembanad Backwaters, Kerala',
+      areaAvgPriceSqFt: 20100,
+      last1YearGrowth: 15.1,
+      demandScore: 9.3,
+      investmentScore: 9.1
+    },
+    agent: AGENTS_DATA[3],
+    createdAt: '2026-03-09'
+  },
+  {
+    id: 'prop-20',
+    title: 'The Udaipur Mewar Royal Haveli Estate',
+    slug: 'the-udaipur-mewar-royal-haveli-estate',
+    tagline: 'Regal lakeside heritage palace estate overlooking Lake Pichola and City Palace',
+    description: 'Embodying the grandeur of Rajput royalty, this authentic lakeside palace estate offers front-row views of Lake Pichola and the City Palace of Udaipur. Meticulously handcrafted by master artisans with Makrana white marble jharokhas, fresco-painted domes, central marble fountain courtyards, private sunset rooftop terrace, royal banquet hall, and temperature-controlled indoor marble swimming pool.',
+    price: 420000000,
+    originalPrice: 460000000,
+    currency: '₹',
+    type: 'buy',
+    category: 'Historic Manor',
+    status: 'For Sale',
+    isFeatured: true,
+    isVerified: true,
+    isHot: true,
+    rating: 5.0,
+    reviewCount: 26,
+    bedrooms: 7,
+    bathrooms: 9,
+    areaSqFt: 12500,
+    garages: 5,
+    yearBuilt: 2024,
+    address: {
+      street: 'Lake Palace Road, Heritage Quarter',
+      neighborhood: 'Lake Pichola',
+      city: 'Udaipur',
+      state: 'Rajasthan',
+      zipCode: '313001',
+      country: 'India',
+      lat: 24.5764,
+      lng: 73.6835
+    },
+    images: [
+      'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85'
+    ],
+    virtualTourRooms: [
+      {
+        id: 'room-jharokha-terrace',
+        name: 'Mewar Sunset Terrace & Jharokhas',
+        panoramaUrl: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=2000&q=90',
+        description: 'Ornate white Makrana marble stone balconies overlooking the shimmering waters of Lake Pichola.'
+      }
+    ],
+    amenities: [
+      'Unobstructed Lake Pichola & City Palace Views',
+      'Authentic Makrana Marble Jharokhas & Carvings',
+      'Heated Indoor Royal Marble Swimming Pool',
+      'Fresco-Adorned Banquet Ballroom',
+      'Private High-Speed Boat Moorings',
+      'Courtyard Lotus Fountains & Zen Pavilions',
+      'Heritage Conservation Bureau Approved',
+      'Antique Chandelier & Gilded Architecture'
+    ],
+    nearby: [
+      { name: 'City Palace Complex & Museum', distance: '600 m', type: 'Heritage', rating: 5.0 },
+      { name: 'Taj Lake Palace Luxury Resort', distance: '400 m (by boat)', type: 'Hospitality', rating: 5.0 },
+      { name: 'Jag Mandir Island Palace', distance: '1.1 km', type: 'Landmark', rating: 4.9 },
+      { name: 'Maharana Pratap Airport (UDR)', distance: '24 km', type: 'Airport', rating: 4.7 }
+    ],
+    legalSection: {
+      ecStatus: '50-Year Verified Mewar Heritage Freehold Title',
+      reraNumber: 'RAJ/RERA/UD/2024/0042',
+      ownershipVerification: 'Urban Improvement Trust (UIT) Sanctioned & Heritage Board Clear'
+    },
+    areaInsights: {
+      areaName: 'Lake Pichola, Udaipur',
+      areaAvgPriceSqFt: 33600,
+      last1YearGrowth: 16.8,
+      demandScore: 9.8,
+      investmentScore: 9.5
+    },
+    agent: AGENTS_DATA[0],
+    createdAt: '2026-03-04'
+  },
+  {
+    id: 'prop-21',
+    title: 'The ECR Coral Bay Beach Villa',
+    slug: 'the-ecr-coral-bay-beach-villa',
+    tagline: 'Contemporary beachfront villa with infinity pool directly on Chennai’s Golden Coast',
+    description: 'Nestled along the prestigious East Coast Road (ECR) in Akkarai, this 8,400 sq.ft architectural residence offers uninterrupted panoramic views of the Bay of Bengal with private direct beach access. Featuring expansive glass walls, imported Travertine facades, an elevated sea-facing infinity edge pool, private home theater, biometric elevator, and manicured coastal coconut lawns.',
+    price: 220000000,
+    originalPrice: 240000000,
+    currency: '₹',
+    type: 'buy',
+    category: 'Waterfront Estate',
+    status: 'For Sale',
+    isFeatured: true,
+    isVerified: true,
+    isHot: true,
+    rating: 4.96,
+    reviewCount: 27,
+    bedrooms: 6,
+    bathrooms: 7,
+    areaSqFt: 8400,
+    garages: 4,
+    yearBuilt: 2025,
+    address: {
+      street: 'Coral Drive, 4th Seaward Road',
+      neighborhood: 'Akkarai, ECR',
+      city: 'Chennai',
+      state: 'Tamil Nadu',
+      zipCode: '600119',
+      country: 'India',
+      lat: 12.9010,
+      lng: 80.2520
+    },
+    images: [
+      'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85'
+    ],
+    virtualTourRooms: [
+      {
+        id: 'room-bay-terrace',
+        name: 'Bay of Bengal Beachfront Deck',
+        panoramaUrl: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=2000&q=90',
+        description: 'Sunken lounge and infinity edge pool looking onto the breaking waves of Akkarai beach.'
+      }
+    ],
+    amenities: [
+      'Direct Private Beach Access Path',
+      'Elevated Infinity Edge Pool',
+      'Panoramic Bay of Bengal Oceanfront Views',
+      'Italian Travertine & Teak Wood Facade',
+      'Biometric Keyless Access Control',
+      'Private 4K Dolby Home Theater',
+      'CMDA Approved & CRZ Permitted',
+      'Solar Power with Battery Storage'
+    ],
+    nearby: [
+      { name: 'Akkarai Beachfront & Promenade', distance: '100 m', type: 'Beach', rating: 4.9 },
+      { name: 'OMR Sholinganallur IT Tech Corridor', distance: '3.5 km', type: 'Tech Park', rating: 4.8 },
+      { name: 'Apollo Speciality Hospital OMR', distance: '6.2 km', type: 'Hospital', rating: 4.9 },
+      { name: 'Mayajaal Multiplex & Entertainment Enclave', distance: '4.8 km', type: 'Entertainment', rating: 4.6 },
+      { name: 'Chennai International Airport (MAA)', distance: '19 km', type: 'Airport', rating: 4.8 }
+    ],
+    legalSection: {
+      ecStatus: '35-Year Nil Encumbrance Certified by Madras High Court Advocates',
+      reraNumber: 'TN/01/Building/7819/2024',
+      ownershipVerification: 'CMDA Planning Permit No. 892/2024 • Patta Registered'
+    },
+    areaInsights: {
+      areaName: 'Akkarai, ECR Chennai',
+      areaAvgPriceSqFt: 26190,
+      last1YearGrowth: 18.2,
+      demandScore: 9.7,
+      investmentScore: 9.3
+    },
+    agent: AGENTS_DATA[4], // R. Senthil Nathan
+    createdAt: '2026-03-12'
+  },
+  {
+    id: 'prop-22',
+    title: 'The GIFT City Horizon Sky Penthouse',
+    slug: 'the-gift-city-horizon-sky-penthouse',
+    tagline: 'Next-gen automated smart duplex penthouse in India’s premier international financial hub',
+    description: 'Perched on the 34th floor of a landmark tower in Gujarat International Finance Tec-City (GIFT City), this 7,100 sq.ft duplex penthouse represents the future of Indian luxury living. Complete with automated AI climate management, private cantilevered sky garden overlooking the Sabarmati riverfront, triple-height atrium, Gaggenau kitchen, and access to private business helipad and executive boardroom.',
+    price: 165000000,
+    originalPrice: 180000000,
+    currency: '₹',
+    type: 'buy',
+    category: 'Duplex Penthouse',
+    status: 'For Sale',
+    isFeatured: true,
+    isVerified: true,
+    rating: 4.93,
+    reviewCount: 16,
+    bedrooms: 4,
+    bathrooms: 5,
+    areaSqFt: 7100,
+    garages: 3,
+    yearBuilt: 2025,
+    address: {
+      street: 'GIFT One Tower, Global Financial Corridor',
+      neighborhood: 'GIFT City',
+      city: 'Ahmedabad',
+      state: 'Gujarat',
+      zipCode: '382355',
+      country: 'India',
+      lat: 23.1610,
+      lng: 72.6840
+    },
+    images: [
+      'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1567496898669-ee935f5f647a?auto=format&fit=crop&w=1600&q=85'
+    ],
+    virtualTourRooms: [
+      {
+        id: 'room-gift-skyline',
+        name: 'GIFT City Skyline Atrium',
+        panoramaUrl: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=2000&q=90',
+        description: 'Triple-height glass atrium framing the GIFT City smart skyline and Sabarmati river.'
+      }
+    ],
+    amenities: [
+      'Cantilevered Sky Garden Terrace',
+      'Automated IoT Smart Climate & Glass',
+      'Direct Access to Rooftop Business Helipad',
+      'Sabarmati Riverfront Panoramic Vistas',
+      'Gaggenau & Sub-Zero Fitted Culinary Salon',
+      'High-Speed Dedicated Private Elevator',
+      'Special Economic Zone (SEZ) Benefits',
+      'GujRERA Registered Freehold Title'
+    ],
+    nearby: [
+      { name: 'International Financial Services Centre (IFSC)', distance: '400 m', type: 'Business', rating: 5.0 },
+      { name: 'GIFT City Club & Golf Fairways', distance: '1.2 km', type: 'Sports', rating: 4.8 },
+      { name: 'Sabarmati Riverfront Promenade', distance: '2.5 km', type: 'Park', rating: 4.9 },
+      { name: 'Sardar Vallabhbhai Patel International Airport (AMD)', distance: '18 km', type: 'Airport', rating: 4.8 }
+    ],
+    legalSection: {
+      ecStatus: '30-Year Clear Freehold Verified by Singhi & Co.',
+      reraNumber: 'PR/GJ/GANDHINAGAR/2024/912',
+      ownershipVerification: 'GIFT City Special Planning Authority (SPA) Sanctioned'
+    },
+    areaInsights: {
+      areaName: 'GIFT City, Gandhinagar - Ahmedabad',
+      areaAvgPriceSqFt: 23200,
+      last1YearGrowth: 21.0,
+      demandScore: 9.9,
+      investmentScore: 9.8
+    },
+    agent: AGENTS_DATA[2],
+    createdAt: '2026-03-14'
   }
 ];
+

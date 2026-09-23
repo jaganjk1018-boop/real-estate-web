@@ -36,11 +36,20 @@ import { getPropertyLocationData } from '../data/locationFacilities';
 // Regional presets with center coordinates & bounds
 const REGIONS = [
   { id: 'all', name: 'All Global Markets', center: '34.0837,-118.4447', zoom: 12 },
+  { id: 'india', name: '🇮🇳 All India (Trophy Estates)', center: '19.0760,72.8777', zoom: 11 },
+  { id: 'maharashtra', name: '🏙️ Mumbai (Worli Penthouse)', center: '19.0178,72.8173', zoom: 15 },
+  { id: 'karnataka', name: '🌿 Bengaluru (Indiranagar Villa)', center: '12.9784,77.6408', zoom: 15 },
+  { id: 'delhi', name: '🏛️ Delhi NCR (Lutyens Mansion)', center: '28.6015,77.2185', zoom: 15 },
+  { id: 'tamilnadu', name: '🌊 Tamil Nadu (Chennai ECR & Plots)', center: '12.9150,80.2520', zoom: 15 },
+  { id: 'telangana', name: '💎 Hyderabad (Jubilee Hills)', center: '17.4319,78.4073', zoom: 15 },
+  { id: 'goa', name: '🏖️ Goa (Candolim Beach)', center: '15.5186,73.7667', zoom: 15 },
+  { id: 'kerala', name: '🌴 Kerala (Vembanad Backwaters)', center: '9.6175,76.4278', zoom: 15 },
+  { id: 'rajasthan', name: '👑 Rajasthan (Udaipur Royal Haveli)', center: '24.5764,73.6835', zoom: 15 },
+  { id: 'gujarat', name: '⚡ Gujarat (GIFT City Penthouse)', center: '23.1610,72.6840', zoom: 15 },
   { id: 'california', name: '🌴 California (Bel-Air & SF)', center: '34.0837,-118.4447', zoom: 14 },
   { id: 'newyork', name: '🗽 New York (Manhattan)', center: '40.7615,-73.9718', zoom: 15 },
   { id: 'florida', name: '🏖️ Florida (Miami Beach)', center: '25.7906,-80.1300', zoom: 14 },
-  { id: 'colorado', name: '🏔️ Colorado (Aspen Chalets)', center: '39.1911,-106.8175', zoom: 14 },
-  { id: 'chennai', name: '🌲 Chennai (Tambaram Plots)', center: '12.9249,80.1000', zoom: 15 },
+  { id: 'colorado', name: '🏔️ Colorado (Aspen Chalets)', center: '39.1911,-106.8175', zoom: 14 }
 ];
 
 const MAP_MODES = [
@@ -69,8 +78,35 @@ export default function PropertyMapExplorer({
   // Region filtering
   const filteredProperties = useMemo(() => {
     if (selectedRegion === 'all') return properties;
-    if (selectedRegion === 'chennai') {
-      return properties.filter(p => p.address?.city?.toLowerCase().includes('chennai') || p.isLand);
+    if (selectedRegion === 'india') {
+      return properties.filter(p => p.address?.country?.toLowerCase() === 'india' || p.isLand);
+    }
+    if (selectedRegion === 'maharashtra') {
+      return properties.filter(p => p.address?.state?.toLowerCase().includes('maharashtra') || p.address?.city?.toLowerCase().includes('mumbai'));
+    }
+    if (selectedRegion === 'karnataka') {
+      return properties.filter(p => p.address?.state?.toLowerCase().includes('karnataka') || p.address?.city?.toLowerCase().includes('bengaluru') || p.address?.city?.toLowerCase().includes('bangalore'));
+    }
+    if (selectedRegion === 'delhi') {
+      return properties.filter(p => p.address?.state?.toLowerCase().includes('delhi') || p.address?.city?.toLowerCase().includes('delhi'));
+    }
+    if (selectedRegion === 'tamilnadu' || selectedRegion === 'chennai') {
+      return properties.filter(p => p.address?.state?.toLowerCase().includes('tamil nadu') || p.address?.city?.toLowerCase().includes('chennai') || p.isLand);
+    }
+    if (selectedRegion === 'telangana') {
+      return properties.filter(p => p.address?.state?.toLowerCase().includes('telangana') || p.address?.city?.toLowerCase().includes('hyderabad'));
+    }
+    if (selectedRegion === 'goa') {
+      return properties.filter(p => p.address?.state?.toLowerCase().includes('goa') || p.address?.city?.toLowerCase().includes('candolim'));
+    }
+    if (selectedRegion === 'kerala') {
+      return properties.filter(p => p.address?.state?.toLowerCase().includes('kerala') || p.address?.city?.toLowerCase().includes('kochi'));
+    }
+    if (selectedRegion === 'rajasthan') {
+      return properties.filter(p => p.address?.state?.toLowerCase().includes('rajasthan') || p.address?.city?.toLowerCase().includes('udaipur'));
+    }
+    if (selectedRegion === 'gujarat') {
+      return properties.filter(p => p.address?.state?.toLowerCase().includes('gujarat') || p.address?.city?.toLowerCase().includes('ahmedabad'));
     }
     if (selectedRegion === 'california') {
       return properties.filter(p => {
@@ -147,10 +183,23 @@ export default function PropertyMapExplorer({
 
   const handleRegionChange = (reg) => {
     setSelectedRegion(reg.id);
+    const isIndianTab = ['india', 'maharashtra', 'karnataka', 'delhi', 'tamilnadu', 'telangana', 'goa', 'kerala', 'rajasthan', 'gujarat', 'chennai'].includes(reg.id);
+    if (isIndianTab) {
+      setMapProvider('mappls');
+    }
     const match = properties.find(p => {
       if (reg.id === 'all') return true;
-      if (reg.id === 'chennai') return p.address?.city?.toLowerCase().includes('chennai') || p.isLand;
-      if (reg.id === 'california') return p.address?.city?.toLowerCase().includes('los angeles');
+      if (reg.id === 'india') return p.address?.country?.toLowerCase() === 'india' || p.isLand;
+      if (reg.id === 'maharashtra') return p.address?.state?.toLowerCase().includes('maharashtra') || p.address?.city?.toLowerCase().includes('mumbai');
+      if (reg.id === 'karnataka') return p.address?.state?.toLowerCase().includes('karnataka') || p.address?.city?.toLowerCase().includes('bengaluru') || p.address?.city?.toLowerCase().includes('bangalore');
+      if (reg.id === 'delhi') return p.address?.state?.toLowerCase().includes('delhi') || p.address?.city?.toLowerCase().includes('delhi');
+      if (reg.id === 'tamilnadu' || reg.id === 'chennai') return p.address?.state?.toLowerCase().includes('tamil nadu') || p.address?.city?.toLowerCase().includes('chennai') || p.isLand;
+      if (reg.id === 'telangana') return p.address?.state?.toLowerCase().includes('telangana') || p.address?.city?.toLowerCase().includes('hyderabad');
+      if (reg.id === 'goa') return p.address?.state?.toLowerCase().includes('goa') || p.address?.city?.toLowerCase().includes('candolim');
+      if (reg.id === 'kerala') return p.address?.state?.toLowerCase().includes('kerala') || p.address?.city?.toLowerCase().includes('kochi');
+      if (reg.id === 'rajasthan') return p.address?.state?.toLowerCase().includes('rajasthan') || p.address?.city?.toLowerCase().includes('udaipur');
+      if (reg.id === 'gujarat') return p.address?.state?.toLowerCase().includes('gujarat') || p.address?.city?.toLowerCase().includes('ahmedabad');
+      if (reg.id === 'california') return p.address?.city?.toLowerCase().includes('los angeles') || p.address?.city?.toLowerCase().includes('beverly') || p.address?.city?.toLowerCase().includes('san francisco');
       if (reg.id === 'newyork') return p.address?.city?.toLowerCase().includes('new york');
       if (reg.id === 'florida') return p.address?.city?.toLowerCase().includes('miami');
       if (reg.id === 'colorado') return p.address?.city?.toLowerCase().includes('aspen');

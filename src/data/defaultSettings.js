@@ -104,7 +104,7 @@ export const DEFAULT_SETTINGS = {
   map: {
     provider: 'google_maps', // 'google_maps' | 'mappls'
     googleMapsApiKey: 'AIzaSyA8_SAMPLE_KEY_JK_9824XQ10',
-    mapplsApiKey: 'map_live_948201_tn_in_sample',
+    mapplsApiKey: '2fce9761ffdc4509a89e6b83b27c49db',
     defaultLocation: {
       city: 'Los Angeles',
       lat: 34.0522,

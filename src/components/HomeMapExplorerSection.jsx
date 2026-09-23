@@ -54,7 +54,8 @@ const MAP_MODES = [
 ];
 
 export default function HomeMapExplorerSection({ onScheduleVisit, onOpenTour }) {
-  const { properties, currency, unit } = useRealEstateStore();
+  const { properties, currency, unit, platformSettings } = useRealEstateStore();
+  const mapplsApiKey = platformSettings?.map?.mapplsApiKey || process.env.NEXT_PUBLIC_MAPPLS_API_KEY || '2fce9761ffdc4509a89e6b83b27c49db';
   
   const [selectedRegion, setSelectedRegion] = useState('all');
   const [activeProperty, setActiveProperty] = useState(properties[0] || null);
@@ -63,7 +64,7 @@ export default function HomeMapExplorerSection({ onScheduleVisit, onOpenTour }) 
   const [mapMode, setMapMode] = useState('h'); // Default to Hybrid (Satellite + Roads)
   const [zoom, setZoom] = useState(15);
 
-  const [mapProvider, setMapProvider] = useState('google'); // 'google' | 'osm'
+  const [mapProvider, setMapProvider] = useState('google'); // 'google' | 'mappls' | 'osm'
   const [isMapLoading, setIsMapLoading] = useState(false);
 
   // Region filtering
@@ -102,7 +103,7 @@ export default function HomeMapExplorerSection({ onScheduleVisit, onOpenTour }) 
     setIsSidePanelOpen(true);
   };
 
-  // Map embed URL (Google Maps or OpenStreetMap)
+  // Map embed URL (Google Maps, Mappls, or OpenStreetMap)
   const mapEmbedUrl = useMemo(() => {
     const lat = activeProperty?.address?.lat || 34.0837;
     const lng = activeProperty?.address?.lng || -118.4447;
@@ -114,19 +115,26 @@ export default function HomeMapExplorerSection({ onScheduleVisit, onOpenTour }) 
       return `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat}%2C${lng}`;
     }
 
+    if (mapProvider === 'mappls') {
+      return `https://maps.mappls.com/?@${lat},${lng},${zoom}z`;
+    }
+
     const query = `${lat},${lng}`;
     return `https://maps.google.com/maps?q=${query}&t=${mapMode}&z=${zoom}&ie=UTF8&iwloc=&output=embed`;
   }, [activeProperty, mapProvider, mapMode, zoom]);
 
-  // Direct Google Maps search/directions URL
+  // Direct search/directions URL (Mappls or Google Maps)
   const googleMapsDirectionsUrl = useMemo(() => {
     if (!activeProperty?.address) return 'https://maps.google.com';
     const { lat, lng, street, city } = activeProperty.address;
+    if (mapProvider === 'mappls' && lat && lng) {
+      return `https://maps.mappls.com/?@${lat},${lng},17z`;
+    }
     if (lat && lng) {
       return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
     }
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${street}, ${city}`)}`;
-  }, [activeProperty]);
+  }, [activeProperty, mapProvider]);
 
   return (
     <section id="map-explorer" className="relative py-8 sm:py-12 px-4 sm:px-8 max-w-7xl mx-auto space-y-6">
@@ -157,6 +165,9 @@ export default function HomeMapExplorerSection({ onScheduleVisit, onOpenTour }) 
               suppressHydrationWarning
               onClick={() => {
                 setSelectedRegion(tab.id);
+                if (tab.id === 'chennai') {
+                  setMapProvider('mappls');
+                }
                 const match = properties.find(p => {
                   if (tab.id === 'all') return true;
                   if (tab.id === 'chennai') return p.address?.city?.toLowerCase().includes('chennai');
@@ -218,33 +229,60 @@ export default function HomeMapExplorerSection({ onScheduleVisit, onOpenTour }) 
               );
             })}
 
-            {/* Provider Switch (Google vs OpenStreetMap) */}
-            <button
-              type="button"
-              suppressHydrationWarning
-              onClick={() => setMapProvider(prev => (prev === 'google' ? 'osm' : 'google'))}
-              className={`px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 border transition-all cursor-pointer ${
-                mapProvider === 'osm'
-                  ? 'bg-emerald-700 text-white border-emerald-700'
-                  : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'
-              }`}
-              title="Toggle Google Satellite or OpenStreetMap"
-            >
-              <Compass className="w-3.5 h-3.5" />
-              <span>{mapProvider === 'google' ? 'OSM' : 'Google'}</span>
-            </button>
+            {/* Provider Switch (Google vs Mappls vs OSM) */}
+            <div className="flex items-center gap-1 border-l border-gray-200 pl-1 ml-0.5">
+              <button
+                type="button"
+                suppressHydrationWarning
+                onClick={() => setMapProvider('google')}
+                className={`px-2 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  mapProvider === 'google'
+                    ? 'bg-[#1E3A5F] text-white shadow-xs'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-[#1E3A5F]'
+                }`}
+                title="Google Maps Satellite & Roads"
+              >
+                Google
+              </button>
+              <button
+                type="button"
+                suppressHydrationWarning
+                onClick={() => setMapProvider('mappls')}
+                className={`px-2 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  mapProvider === 'mappls'
+                    ? 'bg-[#8A5A00] text-white shadow-xs font-black'
+                    : 'text-gray-600 hover:bg-amber-50 hover:text-[#8A5A00]'
+                }`}
+                title="Mappls (MapmyIndia) Precision GPS & Cadastre Network"
+              >
+                Mappls
+              </button>
+              <button
+                type="button"
+                suppressHydrationWarning
+                onClick={() => setMapProvider('osm')}
+                className={`px-2 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  mapProvider === 'osm'
+                    ? 'bg-emerald-700 text-white shadow-xs'
+                    : 'text-gray-600 hover:bg-emerald-50 hover:text-emerald-700'
+                }`}
+                title="OpenStreetMap Standard"
+              >
+                OSM
+              </button>
+            </div>
 
             <div className="h-4 w-px bg-gray-200 mx-0.5 hidden sm:block" />
 
-            {/* Direct Open in Google Maps */}
+            {/* Direct Open in Navigation */}
             <a
               href={googleMapsDirectionsUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="px-2.5 py-1 rounded-lg text-xs font-bold text-[#8A5A00] hover:bg-amber-50 flex items-center gap-1 transition-colors"
-              title="Open full view in Google Maps"
+              title={`Open direct live GPS in ${mapProvider === 'mappls' ? 'Mappls' : 'Google Maps'}`}
             >
-              <span>GPS</span>
+              <span>{mapProvider === 'mappls' ? 'Mappls GPS' : 'GPS'}</span>
               <ExternalLink className="w-3 h-3" />
             </a>
           </div>

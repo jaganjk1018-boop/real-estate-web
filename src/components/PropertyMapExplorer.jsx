@@ -57,11 +57,12 @@ export default function PropertyMapExplorer({
   activePropertyId = null,
   onSelectProperty = null
 }) {
-  const { currency, unit } = useRealEstateStore();
+  const { currency, unit, platformSettings } = useRealEstateStore();
+  const mapplsApiKey = platformSettings?.map?.mapplsApiKey || process.env.NEXT_PUBLIC_MAPPLS_API_KEY || '2fce9761ffdc4509a89e6b83b27c49db';
   const [selectedRegion, setSelectedRegion] = useState('all');
   const [activePropId, setActivePropId] = useState(activePropertyId || properties[0]?.id);
   const [mapMode, setMapMode] = useState('h');
-  const [mapProvider, setMapProvider] = useState('google'); // 'google' or 'osm'
+  const [mapProvider, setMapProvider] = useState('google'); // 'google' | 'mappls' | 'osm'
   const [zoomLevel, setZoomLevel] = useState(15);
   const [isLoadingMap, setIsLoadingMap] = useState(false);
 
@@ -114,7 +115,7 @@ export default function PropertyMapExplorer({
     return { lat: 34.0837, lng: -118.4447, query: 'Los Angeles, CA' };
   }, [activeProperty]);
 
-  // Real Map Embed URL (Google Maps or OpenStreetMap)
+  // Real Map Embed URL (Google Maps, Mappls, or OpenStreetMap)
   const mapEmbedUrl = useMemo(() => {
     if (mapProvider === 'osm') {
       const latDelta = 0.012;
@@ -122,16 +123,22 @@ export default function PropertyMapExplorer({
       const bbox = `${coords.lng - lngDelta}%2C${coords.lat - latDelta}%2C${coords.lng + lngDelta}%2C${coords.lat + latDelta}`;
       return `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${coords.lat}%2C${coords.lng}`;
     }
+    if (mapProvider === 'mappls') {
+      return `https://maps.mappls.com/?@${coords.lat},${coords.lng},${zoomLevel}z`;
+    }
     return `https://maps.google.com/maps?q=${coords.query}&t=${mapMode}&z=${zoomLevel}&ie=UTF8&iwloc=&output=embed`;
   }, [mapProvider, coords, mapMode, zoomLevel]);
 
-  // Direct turn-by-turn GPS URL
+  // Direct turn-by-turn GPS URL (Mappls or Google Maps)
   const directGpsUrl = useMemo(() => {
+    if (mapProvider === 'mappls' && activeProperty?.address?.lat && activeProperty?.address?.lng) {
+      return `https://maps.mappls.com/?@${activeProperty.address.lat},${activeProperty.address.lng},17z`;
+    }
     if (activeProperty?.address?.lat && activeProperty?.address?.lng) {
       return `https://www.google.com/maps/search/?api=1&query=${activeProperty.address.lat},${activeProperty.address.lng}`;
     }
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${activeProperty?.address?.street}, ${activeProperty?.address?.city}`)}`;
-  }, [activeProperty]);
+  }, [activeProperty, mapProvider]);
 
   const handleSelectProperty = (prop) => {
     setActivePropId(prop.id);
@@ -212,19 +219,42 @@ export default function PropertyMapExplorer({
               );
             })}
 
-            {/* Provider Switch (Google vs OpenStreetMap) */}
-            <button
-              onClick={() => setMapProvider(prev => (prev === 'google' ? 'osm' : 'google'))}
-              className={`px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1 border transition-all cursor-pointer ${
-                mapProvider === 'osm'
-                  ? 'bg-emerald-700 text-white border-emerald-700'
-                  : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'
-              }`}
-              title="Toggle between Google Maps and OpenStreetMap"
-            >
-              <Globe className="w-3.5 h-3.5" />
-              <span>{mapProvider === 'google' ? 'OSM' : 'Google'}</span>
-            </button>
+            {/* Provider Switch (Google vs Mappls vs OSM) */}
+            <div className="flex items-center gap-1 border-l border-gray-200 pl-1 ml-0.5">
+              <button
+                onClick={() => setMapProvider('google')}
+                className={`px-2 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  mapProvider === 'google'
+                    ? 'bg-[#1E3A5F] text-white shadow-xs'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-[#1E3A5F]'
+                }`}
+                title="Google Maps"
+              >
+                Google
+              </button>
+              <button
+                onClick={() => setMapProvider('mappls')}
+                className={`px-2 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  mapProvider === 'mappls'
+                    ? 'bg-[#8A5A00] text-white shadow-xs font-black'
+                    : 'text-gray-600 hover:bg-amber-50 hover:text-[#8A5A00]'
+                }`}
+                title="Mappls (MapmyIndia) Precision GPS & Cadastre Network"
+              >
+                Mappls
+              </button>
+              <button
+                onClick={() => setMapProvider('osm')}
+                className={`px-2 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  mapProvider === 'osm'
+                    ? 'bg-emerald-700 text-white shadow-xs'
+                    : 'text-gray-600 hover:bg-emerald-50 hover:text-emerald-700'
+                }`}
+                title="OpenStreetMap Standard"
+              >
+                OSM
+              </button>
+            </div>
 
             <div className="h-4 w-px bg-gray-200 mx-0.5 hidden sm:block" />
 
@@ -234,9 +264,9 @@ export default function PropertyMapExplorer({
               target="_blank"
               rel="noopener noreferrer"
               className="px-2.5 py-1 rounded-xl text-xs font-bold text-[#8A5A00] hover:bg-amber-50 flex items-center gap-1 transition-colors"
-              title="Open direct GPS in Google Maps"
+              title={`Open direct live GPS in ${mapProvider === 'mappls' ? 'Mappls' : 'Google Maps'}`}
             >
-              <span>GPS</span>
+              <span>{mapProvider === 'mappls' ? 'Mappls GPS' : 'GPS'}</span>
               <ExternalLink className="w-3 h-3" />
             </a>
           </div>

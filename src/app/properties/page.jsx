@@ -36,7 +36,7 @@ function PropertiesContent() {
   const initialSearch = searchParams.get('search') || '';
   const initialFilter = searchParams.get('filter') || '';
   const initialMinPrice = searchParams.get('minPrice') ? Number(searchParams.get('minPrice')) : 0;
-  const initialMaxPrice = searchParams.get('maxPrice') ? Number(searchParams.get('maxPrice')) : 30000000;
+  const initialMaxPrice = searchParams.get('maxPrice') ? Number(searchParams.get('maxPrice')) : 1000000000;
   const initialBeds = searchParams.get('beds') || 'all';
 
   // Local Filter States
@@ -81,7 +81,7 @@ function PropertiesContent() {
     setSelectedCategory('all');
     setSelectedRegion('all');
     setMinPrice(0);
-    setMaxPrice(30000000);
+    setMaxPrice(1000000000);
     setBedrooms('all');
     setSelectedAmenities([]);
     setSortBy('featured');
@@ -143,8 +143,9 @@ function PropertiesContent() {
       // Category filter
       if (selectedCategory !== 'all' && prop.category !== selectedCategory) return false;
 
-      // Price filter
-      if (prop.price < minPrice || prop.price > maxPrice) return false;
+      // Price filter (unbounded when maxPrice >= 1000000000)
+      if (minPrice > 0 && prop.price < minPrice) return false;
+      if (maxPrice < 1000000000 && prop.price > maxPrice) return false;
 
       // Bedrooms filter
       if (bedrooms !== 'all') {
@@ -303,14 +304,14 @@ function PropertiesContent() {
           <button
             onClick={() => setIsFilterDrawerOpen(!isFilterDrawerOpen)}
             className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 border transition-all ${
-              isFilterDrawerOpen || selectedAmenities.length > 0 || bedrooms !== 'all' || minPrice > 0
+              isFilterDrawerOpen || selectedAmenities.length > 0 || bedrooms !== 'all' || minPrice > 0 || maxPrice < 1000000000
                 ? 'bg-amber-50 text-[#1E3A5F] border-[#D4AF37] font-bold shadow-sm'
                 : 'bg-[#FAF8F5] text-[#1E3A5F] border-gray-200 hover:bg-gray-100'
             }`}
           >
             <SlidersHorizontal className="w-3.5 h-3.5 text-[#D4AF37]" />
             <span>Filters</span>
-            {(selectedAmenities.length > 0 || bedrooms !== 'all') && (
+            {(selectedAmenities.length > 0 || bedrooms !== 'all' || minPrice > 0 || maxPrice < 1000000000) && (
               <span className="w-2 h-2 rounded-full bg-[#D4AF37]" />
             )}
           </button>
@@ -479,21 +480,23 @@ function PropertiesContent() {
             <div className="lg:col-span-2 space-y-1.5">
               <div className="flex justify-between text-xs">
                 <span className="text-gray-600 font-semibold">Max Price Threshold:</span>
-                <span className="text-[#1E3A5F] font-serif font-bold">{formatPrice(maxPrice, currency)}</span>
+                <span className="text-[#1E3A5F] font-serif font-bold">
+                  {maxPrice >= 1000000000 ? 'All Price Tiers (No Limit)' : formatPrice(maxPrice, currency)}
+                </span>
               </div>
               <input
                 type="range"
-                min={20000}
-                max={30000000}
-                step={50000}
-                value={maxPrice}
+                min={1000000}
+                max={1000000000}
+                step={5000000}
+                value={maxPrice >= 1000000000 ? 1000000000 : maxPrice}
                 onChange={(e) => setMaxPrice(Number(e.target.value))}
                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#1E3A5F]"
               />
               <div className="flex justify-between text-[10px] text-gray-400 font-mono">
-                <span>$20K</span>
-                <span>$15M</span>
-                <span>$30M+</span>
+                <span>₹1 Cr / $1M</span>
+                <span>₹50 Cr / $50M</span>
+                <span>All Tiers (No Limit)</span>
               </div>
             </div>
 
@@ -533,7 +536,7 @@ function PropertiesContent() {
         <span>
           Showing <strong className="text-[#1E3A5F] font-bold">{filteredProperties.length}</strong> of {properties.length} Estates
         </span>
-        {(searchQuery || selectedType !== 'all' || selectedCategory !== 'all' || selectedAmenities.length > 0) && (
+        {(searchQuery || selectedType !== 'all' || selectedCategory !== 'all' || selectedAmenities.length > 0 || selectedRegion !== 'all' || minPrice > 0 || maxPrice < 1000000000 || bedrooms !== 'all') && (
           <button
             onClick={resetFilters}
             className="text-[#1E3A5F] font-semibold hover:underline"

@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { X, Check, ShieldCheck, ArrowRight, UserPlus, Info } from 'lucide-react';
+import { X, Check, ShieldCheck, ArrowRight, UserPlus, Info, Flame } from 'lucide-react';
 import { useRealEstateStore } from '../lib/store';
+import { firebaseLoginWithGoogle, isFirebaseConfigured } from '../lib/firebase';
 
 // Official multi-color Google SVG Icon
 export function GoogleIcon({ className = 'w-5 h-5' }) {
@@ -140,6 +141,27 @@ export default function GoogleAuthDialog({ isOpen, onClose, onSuccess }) {
     }
   };
 
+  // Launch live Firebase Google Sign-In popup
+  const handleFirebaseGoogleLogin = async () => {
+    setLoadingAccountId('firebase-google-popup');
+    setErrorMessage('');
+    try {
+      if (isFirebaseConfigured()) {
+        const user = await firebaseLoginWithGoogle('buyer');
+        loginAs(user);
+        onSuccess?.(user);
+        onClose();
+      } else {
+        // Fallback simulate with first preset if Firebase isn't configured
+        handleSelectAccount(GOOGLE_ACCOUNTS_PRESETS[0]);
+      }
+    } catch (err) {
+      setErrorMessage(err.message || 'Google authentication could not be completed.');
+    } finally {
+      setLoadingAccountId(null);
+    }
+  };
+
   // Authenticate selected preset or custom account
   const handleSelectAccount = (account) => {
     setLoadingAccountId(account.id || 'custom');
@@ -236,9 +258,40 @@ export default function GoogleAuthDialog({ isOpen, onClose, onSuccess }) {
         <div className="p-4 sm:p-6 pt-3 sm:pt-4 space-y-3 sm:space-y-4">
           {!isCustomMode ? (
             <>
+              {/* Live Firebase OAuth Popup Trigger */}
+              <button
+                type="button"
+                onClick={handleFirebaseGoogleLogin}
+                disabled={!!loadingAccountId}
+                className="w-full flex items-center justify-between p-3 rounded-2xl border-2 border-[#4285F4]/40 bg-blue-50/50 hover:bg-blue-50 hover:border-[#4285F4] text-left transition-all group focus:outline-none focus:ring-2 focus:ring-[#4285F4]/30 cursor-pointer shadow-xs"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-xs border border-blue-200">
+                    <GoogleIcon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-gray-900 group-hover:text-[#1E3A5F] flex items-center gap-1.5">
+                      <span>Launch Google Account Popup</span>
+                      <Flame className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                    </div>
+                    <div className="text-[11px] text-[#4285F4] font-semibold">
+                      Live Firebase Authentication (OAuth 2.0)
+                    </div>
+                  </div>
+                </div>
+                <ArrowRight className="w-4 h-4 text-[#4285F4] transition-transform group-hover:translate-x-1" />
+              </button>
+
+              <div className="relative flex items-center justify-center my-1">
+                <div className="w-full border-t border-gray-200" />
+                <span className="absolute px-2 bg-white text-[10px] uppercase font-bold text-gray-400">
+                  or choose preset test profile
+                </span>
+              </div>
+
               <div className="space-y-2">
                 <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
-                  Available Accounts
+                  Preset Test Profiles
                 </p>
 
                 <div className="space-y-2">

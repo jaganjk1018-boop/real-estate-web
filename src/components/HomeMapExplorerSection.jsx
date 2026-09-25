@@ -43,7 +43,7 @@ const REGION_TABS = [
   { id: 'maharashtra', label: '🏙️ Mumbai (Worli Penthouse)' },
   { id: 'karnataka', label: '🌿 Bengaluru (Indiranagar Villa)' },
   { id: 'delhi', label: '🏛️ Delhi NCR (Lutyens Mansion)' },
-  { id: 'tamilnadu', label: '🌊 Tamil Nadu (Chennai ECR & Plots)' },
+  { id: 'tamilnadu', label: '🌊 Chennai / Tamil Nadu (Boat Club, Poes Garden, ECR)' },
   { id: 'telangana', label: '💎 Hyderabad (Jubilee Hills)' },
   { id: 'goa', label: '🏖️ Goa (Candolim Beach)' },
   { id: 'kerala', label: '🌴 Kerala (Vembanad Backwaters)' },

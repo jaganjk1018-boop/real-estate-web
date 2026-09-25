@@ -22,7 +22,8 @@ import {
   PhoneCall,
   ChevronRight,
   Home,
-  DollarSign
+  DollarSign,
+  Flame
 } from 'lucide-react';
 import { useRealEstateStore } from '../lib/store';
 import { CURRENCY_SYMBOLS } from '../lib/utils';
@@ -539,6 +540,23 @@ export default function Navbar({
 
                   {/* Section: Client Account & Preferences */}
                   <div className="pt-2 border-t border-gray-100 space-y-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setClientMenuOpen(false);
+                        onOpenAuth?.();
+                      }}
+                      className="w-full flex items-center justify-between p-2 rounded-xl bg-amber-50/70 hover:bg-amber-100/70 text-left font-semibold text-xs text-[#1E3A5F] border border-amber-200/80 transition-colors cursor-pointer"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Flame className="w-4 h-4 text-amber-500 fill-amber-500" />
+                        <span>Firebase Authenticator</span>
+                      </div>
+                      <span className="text-[10px] text-[#8A5A00] font-bold">
+                        Modal ⚡
+                      </span>
+                    </button>
+
                     <Link
                       href="/login"
                       onClick={() => setClientMenuOpen(false)}
@@ -823,6 +841,21 @@ export default function Navbar({
                 </button>
               </div>
             </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenAuth?.();
+              }}
+              className="w-full py-2.5 px-4 rounded-xl bg-amber-50 text-[#1E3A5F] border border-amber-200/80 text-xs font-bold flex items-center justify-between transition-colors cursor-pointer"
+            >
+              <div className="flex items-center gap-2">
+                <Flame className="w-4 h-4 text-amber-500 fill-amber-500" />
+                <span>Firebase Authenticator</span>
+              </div>
+              <span className="text-[10px] text-[#8A5A00] font-bold">Open ⚡</span>
+            </button>
 
             <div className="flex items-center gap-2">
               <Link

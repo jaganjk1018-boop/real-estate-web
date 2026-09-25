@@ -17,7 +17,10 @@ import {
   PhoneCall, 
   Send,
   Trees,
-  Activity
+  Activity,
+  Box,
+  Compass,
+  Ruler
 } from 'lucide-react';
 import HeroSearch from '../components/HeroSearch';
 import PropertyCard from '../components/PropertyCard';
@@ -552,18 +555,90 @@ export default function HomePage() {
               </ClientOnly>
             </div>
 
-            {/* Preview Image */}
-            <div className="relative aspect-[16/10] rounded-2xl overflow-hidden border border-gray-200 shadow-md group cursor-pointer" onClick={() => setTourProperty(properties[0])}>
+            {/* Advanced 3D Spatial Interactive Preview Card */}
+            <div 
+              className="relative aspect-[16/10] rounded-2xl overflow-hidden border-2 border-[#D4AF37]/50 shadow-2xl group cursor-pointer bg-[#070c14]" 
+              onClick={() => setTourProperty(properties[0])}
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85"
-                alt="Virtual Tour Room"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                alt="3D Spatial Tour Showcase"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 filter brightness-90 group-hover:brightness-100"
               />
-              <div className="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/15 transition-colors">
-                <div className="w-16 h-16 rounded-full bg-[#D4AF37] text-[#1E3A5F] flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
-                  <Eye className="w-7 h-7 stroke-[2.5]" />
+              
+              {/* Dark Vignette & Ambient Glow */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#070c14]/90 via-black/20 to-black/40" />
+
+              {/* Top HUD Badges */}
+              <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10 pointer-events-none">
+                <div className="flex items-center gap-2 bg-[#070c14]/85 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 text-white text-[10px] font-bold shadow-lg">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="font-mono text-emerald-300">Matterport LiDAR 4K</span>
                 </div>
+
+                <div className="flex items-center gap-1.5 bg-[#070c14]/85 backdrop-blur-md px-3 py-1.5 rounded-xl border border-[#D4AF37]/40 text-[#D4AF37] text-[10px] font-bold shadow-lg">
+                  <Box className="w-3.5 h-3.5" />
+                  <span>Three.js WebGL Engine</span>
+                </div>
+              </div>
+
+              {/* Pulsing 3D Spatial Hotspots on the preview */}
+              <div className="absolute top-[38%] left-[28%] z-10 pointer-events-none">
+                <div className="relative">
+                  <div className="w-7 h-7 rounded-full bg-[#1E3A5F]/90 border border-[#D4AF37] text-[#D4AF37] flex items-center justify-center shadow-lg">
+                    <Sparkles className="w-3.5 h-3.5" />
+                  </div>
+                  <div className="absolute -inset-1.5 rounded-full border border-[#D4AF37]/50 animate-ping" />
+                  <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-1.5 bg-[#070c14]/90 border border-[#D4AF37]/40 rounded-md px-2 py-0.5 text-[9px] font-bold text-white whitespace-nowrap shadow-md">
+                    24ft Acoustic Coffer
+                  </div>
+                </div>
+              </div>
+
+              <div className="absolute top-[52%] right-[22%] z-10 pointer-events-none">
+                <div className="relative">
+                  <div className="w-7 h-7 rounded-full bg-[#1E3A5F]/90 border border-[#D4AF37] text-[#D4AF37] flex items-center justify-center shadow-lg">
+                    <Sparkles className="w-3.5 h-3.5" />
+                  </div>
+                  <div className="absolute -inset-1.5 rounded-full border border-[#D4AF37]/50 animate-ping" />
+                  <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-1.5 bg-[#070c14]/90 border border-[#D4AF37]/40 rounded-md px-2 py-0.5 text-[9px] font-bold text-white whitespace-nowrap shadow-md">
+                    Automated Pocket Glazing
+                  </div>
+                </div>
+              </div>
+
+              {/* Center Launch Badge */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
+                <div className="p-4 rounded-2xl bg-[#1E3A5F]/90 border-2 border-[#D4AF37] text-white flex flex-col items-center gap-2 shadow-2xl backdrop-blur-md group-hover:scale-110 group-hover:border-white transition-all duration-300">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#D4AF37] to-[#FFF2CE] text-[#1E3A5F] flex items-center justify-center shadow-md">
+                    <Eye className="w-6 h-6 stroke-[2.5]" />
+                  </div>
+                  <span className="text-xs font-black tracking-[0.2em] uppercase font-serif text-[#D4AF37]">
+                    Launch 3D Spatial Tour
+                  </span>
+                  <span className="text-[10px] text-gray-300 font-sans font-medium">
+                    Click to enter 360° WebGL Experience
+                  </span>
+                </div>
+              </div>
+
+              {/* Bottom Feature Pill Strip */}
+              <div className="absolute bottom-3 left-4 right-4 z-10 flex items-center justify-between text-[10px] text-gray-300 bg-[#070c14]/85 backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/10 pointer-events-none">
+                <span className="flex items-center gap-1 font-semibold text-white">
+                  <Compass className="w-3 h-3 text-[#D4AF37]" />
+                  360° Photosphere
+                </span>
+                <span className="text-gray-500">•</span>
+                <span className="flex items-center gap-1 font-semibold text-white">
+                  <Box className="w-3 h-3 text-[#D4AF37]" />
+                  3D Dollhouse
+                </span>
+                <span className="text-gray-500">•</span>
+                <span className="flex items-center gap-1 font-semibold text-white">
+                  <Ruler className="w-3 h-3 text-[#D4AF37]" />
+                  Laser HUD
+                </span>
               </div>
             </div>
 

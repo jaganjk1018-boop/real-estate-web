@@ -1571,6 +1571,514 @@ export const PROPERTIES_DATA = [
     },
     agent: AGENTS_DATA[2],
     createdAt: '2026-03-14'
+  },
+  {
+    id: 'prop-23',
+    title: 'The Boat Club Colonial Heritage Manor',
+    slug: 'the-boat-club-colonial-heritage-manor',
+    tagline: 'Aristocratic Palladian residence with century-old banyan canopies on Chennai’s iconic Billionaires’ Row',
+    description: 'An extraordinarily rare offering on Boat Club Road in R.A. Puram, the most coveted and tightly held pin code in South India. Spanning an expansive 16 grounds (approx 38,400 sq.ft) of lush private grounds along the Adyar riverfront, this stately Palladian colonial manor features sweeping classical porticos, Burma teak double-doors, hand-cut Belgian crystal chandeliers, 6 palatial bedroom suites, a 25-meter temperature-regulated pool, formal banquet ballroom, separate chauffeur and staff quarters, and comprehensive embassy-grade biometric perimeter protection.',
+    price: 850000000,
+    originalPrice: 920000000,
+    currency: '₹',
+    type: 'buy',
+    category: 'Historic Manor',
+    status: 'For Sale',
+    isFeatured: true,
+    isVerified: true,
+    isHot: true,
+    rating: 5.0,
+    reviewCount: 22,
+    bedrooms: 6,
+    bathrooms: 8,
+    areaSqFt: 11500,
+    garages: 6,
+    yearBuilt: 2024,
+    address: {
+      street: '14 Boat Club Road, Raja Annamalaipuram',
+      neighborhood: 'Boat Club, R.A. Puram',
+      city: 'Chennai',
+      state: 'Tamil Nadu',
+      zipCode: '600028',
+      country: 'India',
+      lat: 13.0245,
+      lng: 80.2465
+    },
+    images: [
+      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1600&q=85'
+    ],
+    virtualTourRooms: [
+      {
+        id: 'room-boat-foyer',
+        name: 'Grand Palladian Portico & Foyer',
+        panoramaUrl: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90',
+        description: 'Double-height reception portico with custom Burma teak woodwork and imported Italian marble colonnades.',
+        hotspots: [
+          { id: 'hs-boat-1', title: 'Burma Teak Joinery', x: 30, y: 55, description: 'Handcrafted seasoned Burma teak entrance portal.' },
+          { id: 'hs-boat-2', title: 'Belgian Crystal Chandelier', x: 65, y: 35, description: 'Antique custom-restored crystal lighting masterpiece.' }
+        ]
+      },
+      {
+        id: 'room-boat-lawn',
+        name: 'Adyar Riverfront Verandah & Lawns',
+        panoramaUrl: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=90',
+        description: 'Wraparound verandah overlooking sprawling heritage gardens, ancient banyans, and the private 25m swimming pool.',
+        hotspots: [
+          { id: 'hs-boat-3', title: '25m Lap Pool', x: 50, y: 65, description: 'Temperature-controlled lap pool framed by frangipani trees.' }
+        ]
+      }
+    ],
+    amenities: [
+      'Private 16-Ground Freehold Land Parcel',
+      '25-Meter Heated Lap Pool & Poolhouse',
+      'Burma Teak Architectural Joinery',
+      'Belgian Crystal Chandeliers & Statuario Marble',
+      'Subterranean 6-Car Climate Controlled Garage',
+      '100% DG Power Backup & Solar Microgrid',
+      'Dedicated 4-Bedroom Staff & Security Annex',
+      'RERA Approved & Clear Patta Title'
+    ],
+    nearby: [
+      { name: 'Madras Boat Club & Adyar River', distance: '250 m', type: 'Club', rating: 5.0 },
+      { name: 'The Leela Palace Chennai Luxury Hotel', distance: '1.8 km', type: 'Hotel', rating: 4.9 },
+      { name: 'Apollo Hospitals Greams Road Specialist Center', distance: '4.5 km', type: 'Hospital', rating: 4.9 },
+      { name: 'Chettinad Vidyashram & Sishya Schools', distance: '1.2 km', type: 'School', rating: 5.0 },
+      { name: 'Chennai International Airport (MAA)', distance: '11 km', type: 'Airport', rating: 4.8 }
+    ],
+    legalSection: {
+      ecStatus: '50-Year Nil Encumbrance Certified by King & Partridge Law Firm',
+      reraNumber: 'TN/01/Building/8412/2024',
+      ownershipVerification: 'CMDA Planning Permit No. 1042/2024 • Freehold Clear Patta'
+    },
+    areaInsights: {
+      areaName: 'Boat Club Road, R.A. Puram, Chennai',
+      areaAvgPriceSqFt: 58000,
+      last1YearGrowth: 15.8,
+      demandScore: 10.0,
+      investmentScore: 9.8
+    },
+    agent: AGENTS_DATA[4],
+    createdAt: '2026-03-15'
+  },
+  {
+    id: 'prop-24',
+    title: 'The Poes Garden Sovereign Villa',
+    slug: 'the-poes-garden-sovereign-villa',
+    tagline: 'Contemporary tropical sanctuary with serene central courtyard in Chennai’s VVIP power enclave',
+    description: 'Situated in the ultra-exclusive diplomatic neighborhood of Poes Garden in Alwarpet, this 9,200 sq.ft contemporary architectural villa represents the pinnacle of modern urban sophistication. Designed around an open-to-sky central courtyard with koi ponds and floating vertical gardens, the home showcases Italian Statuario marble floors, motorized acoustic glass walls, a private Otis glass elevator, rooftop heated infinity jacuzzi, custom Poggenpohl kitchen with Miele appliances, and full Lutron circadian smart automation.',
+    price: 620000000,
+    originalPrice: 660000000,
+    currency: '₹',
+    type: 'buy',
+    category: 'Luxury Villa',
+    status: 'For Sale',
+    isFeatured: true,
+    isVerified: true,
+    isHot: true,
+    rating: 4.97,
+    reviewCount: 19,
+    bedrooms: 5,
+    bathrooms: 6,
+    areaSqFt: 9200,
+    garages: 4,
+    yearBuilt: 2025,
+    address: {
+      street: '8 Poes Garden, Off Binny Road, Alwarpet',
+      neighborhood: 'Poes Garden, Alwarpet',
+      city: 'Chennai',
+      state: 'Tamil Nadu',
+      zipCode: '600086',
+      country: 'India',
+      lat: 13.0482,
+      lng: 80.2525
+    },
+    images: [
+      'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1600&q=85'
+    ],
+    virtualTourRooms: [
+      {
+        id: 'room-poes-salon',
+        name: 'Double-Height Living Pavilion',
+        panoramaUrl: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2000&q=90',
+        description: 'Dramatic 22ft ceiling living space opening seamlessly to the private courtyard reflection pool.',
+        hotspots: [
+          { id: 'hs-poes-1', title: 'Reflective Koi Pond', x: 40, y: 60, description: 'Sunken courtyard water court with natural granite stones.' }
+        ]
+      },
+      {
+        id: 'room-poes-master',
+        name: 'Presidential Master Suite',
+        panoramaUrl: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=2000&q=90',
+        description: 'Expansive private suite with walk-in Poliform boutique closet and bookmatched marble ensuite bath.'
+      }
+    ],
+    amenities: [
+      'Central Open-Sky Courtyard & Water Cascade',
+      'Private Hydraulic Glass Capsule Elevator',
+      'Rooftop Heated Jacuzzi & Lounge Terrace',
+      'Lutron HomeWorks QSX Lighting Automation',
+      'Custom Poggenpohl & Gaggenau Chef Kitchen',
+      '24/7 Monitored VVIP Security Perimeter',
+      'Soundproof Dolby Atmos Screening Salon',
+      'German Acoustic Double-Glazed Facade'
+    ],
+    nearby: [
+      { name: 'Semmozhi Poonga Botanical Garden', distance: '850 m', type: 'Park', rating: 4.8 },
+      { name: 'Taj Coromandel Luxury Hotel', distance: '1.4 km', type: 'Hotel', rating: 4.9 },
+      { name: 'Apollo Speciality Hospital Greams Road', distance: '2.8 km', type: 'Hospital', rating: 4.9 },
+      { name: 'Express Avenue & Luxury Boutiques', distance: '2.5 km', type: 'Shopping', rating: 4.8 },
+      { name: 'Chennai International Airport (MAA)', distance: '13 km', type: 'Airport', rating: 4.8 }
+    ],
+    legalSection: {
+      ecStatus: '40-Year Clean Freehold Verified by Senior Advocates of Madras High Court',
+      reraNumber: 'TN/01/Building/6920/2024',
+      ownershipVerification: 'Greater Chennai Corporation (GCC) Sanctioned Plan • Freehold Patta'
+    },
+    areaInsights: {
+      areaName: 'Poes Garden, Alwarpet, Chennai',
+      areaAvgPriceSqFt: 46500,
+      last1YearGrowth: 14.2,
+      demandScore: 9.9,
+      investmentScore: 9.6
+    },
+    agent: AGENTS_DATA[4],
+    createdAt: '2026-03-16'
+  },
+  {
+    id: 'prop-25',
+    title: 'The OMR Bayview Sky Palace Penthouse',
+    slug: 'the-omr-bayview-sky-palace-penthouse',
+    tagline: 'Sky-high duplex penthouse with cantilevered pool and 360° views over Buckingham Canal & Bay of Bengal',
+    description: 'Crowning the 32nd and 33rd floors of Chennai’s most iconic tech-corridor residential tower in Sholinganallur, this 7,800 sq.ft duplex sky palace combines cosmopolitan modernism with resort-style privacy. Boasting double-height 24-foot living glass walls, a private cantilevered glass-bottom heated plunge pool, dedicated private high-speed elevator, bespoke wine cellar, Sub-Zero & Wolf culinary suite, and an expansive wraparound sunset terrace framing sea breezes and sparkling city lights.',
+    price: 185000000,
+    originalPrice: 200000000,
+    currency: '₹',
+    type: 'buy',
+    category: 'Duplex Penthouse',
+    status: 'For Sale',
+    isFeatured: true,
+    isVerified: true,
+    rating: 4.95,
+    reviewCount: 24,
+    bedrooms: 5,
+    bathrooms: 6,
+    areaSqFt: 7800,
+    garages: 4,
+    yearBuilt: 2025,
+    address: {
+      street: 'Tower One, Penthouse 32A, Rajiv Gandhi Salai (OMR)',
+      neighborhood: 'Sholinganallur, OMR',
+      city: 'Chennai',
+      state: 'Tamil Nadu',
+      zipCode: '600119',
+      country: 'India',
+      lat: 12.9030,
+      lng: 80.2285
+    },
+    images: [
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1567496898669-ee935f5f647a?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1600&q=85'
+    ],
+    virtualTourRooms: [
+      {
+        id: 'room-omr-sky',
+        name: '32nd-Floor Sky Living Gallery',
+        panoramaUrl: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=2000&q=90',
+        description: 'Breathtaking double-height salon framing 360-degree views of the OMR skyline and the Bay of Bengal.'
+      },
+      {
+        id: 'room-omr-pool',
+        name: 'Cantilevered Sunset Sky Pool',
+        panoramaUrl: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2000&q=90',
+        description: 'Glass-edge infinity plunge pool jutting out over the skyline with private sun lounger deck.'
+      }
+    ],
+    amenities: [
+      'Private Cantilevered Glass-Bottom Sky Pool',
+      'Direct High-Speed Private Keycard Elevator',
+      'Double-Height 24ft Acoustic Glazed Salon',
+      'Temperature-Controlled 600-Bottle Wine Vault',
+      'Sub-Zero & Wolf Professional Appliances',
+      '4 Covered Reserved Car Parks with Fast EV Chargers',
+      'Private Resident Sky Lounge & Helipad Access',
+      'RERA Approved Grade-A Landmark Development'
+    ],
+    nearby: [
+      { name: 'ELCOT SEZ Tech Park & Infosys Campus', distance: '800 m', type: 'Tech Park', rating: 4.8 },
+      { name: 'Upcoming CMRL Sholinganallur Metro Junction', distance: '450 m', type: 'Transit', rating: 4.9 },
+      { name: 'Apollo Cradle & Specialty Hospital OMR', distance: '1.8 km', type: 'Hospital', rating: 4.8 },
+      { name: 'Marina Mall & PVR INOX Cinema', distance: '5.2 km', type: 'Shopping', rating: 4.7 },
+      { name: 'Chennai International Airport (MAA)', distance: '16 km', type: 'Airport', rating: 4.8 }
+    ],
+    legalSection: {
+      ecStatus: '30-Year Encumbrance Certified by Trilegal',
+      reraNumber: 'TN/01/Building/5519/2023',
+      ownershipVerification: 'CMDA High-Rise Planning Sanction • Individual Undivided Share (UDS) Deeded'
+    },
+    areaInsights: {
+      areaName: 'Sholinganallur, OMR Chennai',
+      areaAvgPriceSqFt: 18500,
+      last1YearGrowth: 17.5,
+      demandScore: 9.8,
+      investmentScore: 9.5
+    },
+    agent: AGENTS_DATA[4],
+    createdAt: '2026-03-17'
+  },
+  {
+    id: 'prop-26',
+    title: 'The Besant Oceanfront Zen Sanctuary',
+    slug: 'the-besant-oceanfront-zen-sanctuary',
+    tagline: 'Serene coastal architectural villa steps from Elliot’s Beach with lush tropical garden courtyards',
+    description: 'Situated in the artistic and peaceful neighborhood of Kalakshetra Colony in Besant Nagar, this 6,900 sq.ft coastal sanctuary blends minimalist contemporary architecture with indigenous South Indian craft. Nestled amidst towering coconut palms and frangipani blossoms just 150 meters from Elliot’s Beach, the home features natural Kota stone and teak wood finishes, private saltwater lap pool, open-to-sky monsoon courtyards, yoga deck, rooftop stargazing pavilion, and zero-carbon solar battery power.',
+    price: 360000000,
+    originalPrice: 390000000,
+    currency: '₹',
+    type: 'buy',
+    category: 'Waterfront Estate',
+    status: 'For Sale',
+    isFeatured: true,
+    isVerified: true,
+    rating: 4.98,
+    reviewCount: 21,
+    bedrooms: 5,
+    bathrooms: 6,
+    areaSqFt: 6900,
+    garages: 3,
+    yearBuilt: 2024,
+    address: {
+      street: '12 Beach Road, Kalakshetra Colony, Besant Nagar',
+      neighborhood: 'Kalakshetra Colony, Besant Nagar',
+      city: 'Chennai',
+      state: 'Tamil Nadu',
+      zipCode: '600090',
+      country: 'India',
+      lat: 12.9985,
+      lng: 80.2718
+    },
+    images: [
+      'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1512915922686-57c11dde9b6b?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1600&q=85'
+    ],
+    virtualTourRooms: [
+      {
+        id: 'room-besant-verandah',
+        name: 'Ocean Breeze Verandah & Courtyard',
+        panoramaUrl: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=2000&q=90',
+        description: 'Teak-decked coastal lounge flowing directly to the central saltwater pool and tropical frangipani courtyard.'
+      },
+      {
+        id: 'room-besant-stargaze',
+        name: 'Rooftop Stargazing Pavilion',
+        panoramaUrl: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=2000&q=90',
+        description: 'Open-air coastal terrace catching year-round sea breezes with panoramic views of the Bay of Bengal.'
+      }
+    ],
+    amenities: [
+      '150 Meters from Elliot’s Beach Promenade',
+      'Private Saltwater Lap Pool with Sun Deck',
+      'Open-Air Monsoon Courtyards & Water Wall',
+      'Natural Kota Stone & Burma Teak Craftsmanship',
+      '100% Net-Metered Solar Rooftop Grid',
+      'Dedicated Rooftop Yoga & Meditation Shala',
+      'Biometric Security & Automated Entry Gate',
+      'Sweet Potable Groundwater & Rainwater Harvesting'
+    ],
+    nearby: [
+      { name: 'Elliot’s Beach & Promenade', distance: '150 m', type: 'Beach', rating: 4.9 },
+      { name: 'Kalakshetra Foundation & Arts Academy', distance: '600 m', type: 'Culture', rating: 5.0 },
+      { name: 'Besant Nagar Gourmet Cafes & Artisanal Bakeries', distance: '350 m', type: 'Dining', rating: 4.8 },
+      { name: 'Fortis Malar Multi-Speciality Hospital Adyar', distance: '2.4 km', type: 'Hospital', rating: 4.7 },
+      { name: 'Chennai International Airport (MAA)', distance: '14 km', type: 'Airport', rating: 4.8 }
+    ],
+    legalSection: {
+      ecStatus: '35-Year Encumbrance Certified with Zero Discrepancy',
+      reraNumber: 'TN/01/Building/6281/2024',
+      ownershipVerification: 'CMDA Coastal Regulatory Zone (CRZ) Clearance • Clear Freehold Title'
+    },
+    areaInsights: {
+      areaName: 'Besant Nagar, Chennai',
+      areaAvgPriceSqFt: 34500,
+      last1YearGrowth: 13.9,
+      demandScore: 9.8,
+      investmentScore: 9.4
+    },
+    agent: AGENTS_DATA[4],
+    createdAt: '2026-03-18'
+  },
+  {
+    id: 'prop-27',
+    title: 'The Anna Nagar Royal Crest Villa',
+    slug: 'the-anna-nagar-royal-crest-villa',
+    tagline: 'Stately multi-level independent luxury residence with private elevator and landscaped rooftop garden',
+    description: 'Located in the prime residential grid of Anna Nagar West along 2nd Avenue, this 6,400 sq.ft independent luxury residence sits on a 4,800 sq.ft corner freehold plot. Boasting an auspicious North-East Vastu layout, the villa features Italian Statuario marble floors, private Mitsubishi elevator across all three levels, 5-car subterranean parking, dedicated 4K home cinema salon, automated Kohler sensory bathrooms, open terrace banquet pavilion, and 100% solar power backup.',
+    price: 280000000,
+    originalPrice: 310000000,
+    currency: '₹',
+    type: 'buy',
+    category: 'Luxury Villa',
+    status: 'For Sale',
+    isFeatured: true,
+    isVerified: true,
+    rating: 4.94,
+    reviewCount: 17,
+    bedrooms: 5,
+    bathrooms: 6,
+    areaSqFt: 6400,
+    garages: 5,
+    yearBuilt: 2025,
+    address: {
+      street: 'Plot 42, 2nd Avenue, Shanti Colony Link',
+      neighborhood: 'Anna Nagar West',
+      city: 'Chennai',
+      state: 'Tamil Nadu',
+      zipCode: '600040',
+      country: 'India',
+      lat: 13.0855,
+      lng: 80.2110
+    },
+    images: [
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1600&q=85'
+    ],
+    virtualTourRooms: [
+      {
+        id: 'room-anna-salon',
+        name: 'Grand Marble Reception Salon',
+        panoramaUrl: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=2000&q=90',
+        description: 'Palatial formal living room with imported Statuario marble flooring and custom teak woodwork.'
+      },
+      {
+        id: 'room-anna-cinema',
+        name: 'Private 4K Dolby Cinema Room',
+        panoramaUrl: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2000&q=90',
+        description: 'Acoustically isolated cinema with recliners and 140-inch laser projection.'
+      }
+    ],
+    amenities: [
+      'Private 4,800 Sq.Ft Corner Freehold Land Plot',
+      'Private Mitsubishi Hydraulic Home Elevator',
+      'Vastu-Compliant Auspicious North-East Entry',
+      'Imported Statuario Italian Marble Throughout',
+      'Subterranean 5-Car Garage with EV Stalls',
+      'Landscaped Rooftop Terrace Banquet Lounge',
+      '24/7 Smart Video Door Surveillance & Alarms',
+      'Potable Sweet Water at 40ft & Corporation Line'
+    ],
+    nearby: [
+      { name: 'Anna Nagar Tower Park & Promenade', distance: '650 m', type: 'Park', rating: 4.8 },
+      { name: 'Anna Nagar Roundtana Metro Station', distance: '800 m', type: 'Transit', rating: 4.9 },
+      { name: 'VR Chennai Mega Shopping & Luxury Mall', distance: '1.9 km', type: 'Shopping', rating: 4.9 },
+      { name: 'MGM Healthcare Multi-Speciality Hospital', distance: '2.5 km', type: 'Hospital', rating: 4.8 },
+      { name: 'Chennai International Airport (MAA)', distance: '15 km', type: 'Airport', rating: 4.8 }
+    ],
+    legalSection: {
+      ecStatus: '30-Year Nil Encumbrance Certified by Madras High Court Advocates',
+      reraNumber: 'TN/01/Building/7310/2024',
+      ownershipVerification: 'Greater Chennai Corporation (GCC) Sanctioned Plan • Freehold Patta'
+    },
+    areaInsights: {
+      areaName: 'Anna Nagar, Chennai',
+      areaAvgPriceSqFt: 28500,
+      last1YearGrowth: 12.8,
+      demandScore: 9.7,
+      investmentScore: 9.3
+    },
+    agent: AGENTS_DATA[4],
+    createdAt: '2026-03-19'
+  },
+  {
+    id: 'prop-28',
+    title: 'The Covelong Laguna Backwater & Ocean Villa',
+    slug: 'the-covelong-laguna-backwater-ocean-villa',
+    tagline: 'Contemporary tropical waterfront estate with private boat jetty on Covelong backwaters and ocean views',
+    description: 'Enviably located where the tranquil Muttukadu backwaters meet the rolling surf of the Bay of Bengal in Covelong, this 5,800 sq.ft private estate is an entertainer’s paradise. Designed in open tropical Balinese pavilion architecture, it features a private wooden boat jetty for catamarans and jet-skis, negative-edge freshwater pool, panoramic sun decks, organic tropical fruit orchards, private chef kitchen, and seamless connectivity to the scenic ECR coastal highway.',
+    price: 145000000,
+    originalPrice: 160000000,
+    currency: '₹',
+    type: 'buy',
+    category: 'Waterfront Estate',
+    status: 'For Sale',
+    isFeatured: true,
+    isVerified: true,
+    rating: 4.92,
+    reviewCount: 15,
+    bedrooms: 4,
+    bathrooms: 5,
+    areaSqFt: 5800,
+    garages: 3,
+    yearBuilt: 2025,
+    address: {
+      street: 'Covelong Beach Road, Near Taj Fisherman’s Cove',
+      neighborhood: 'Muttukadu - Covelong, ECR',
+      city: 'Chennai',
+      state: 'Tamil Nadu',
+      zipCode: '603112',
+      country: 'India',
+      lat: 12.7930,
+      lng: 80.2515
+    },
+    images: [
+      'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1600&q=85',
+      'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1600&q=85'
+    ],
+    virtualTourRooms: [
+      {
+        id: 'room-covelong-deck',
+        name: 'Waterfront Sundeck & Pool',
+        panoramaUrl: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=2000&q=90',
+        description: 'Expansive timber sun terrace facing the backwater lagoon and private boat jetty.'
+      },
+      {
+        id: 'room-covelong-living',
+        name: 'Tropical Living Pavilion',
+        panoramaUrl: 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=2000&q=90',
+        description: 'Open living room with timber beams and panoramic floor-to-ceiling glass on both waterfronts.'
+      }
+    ],
+    amenities: [
+      'Private Wooden Boat Jetty & Watersports Dock',
+      'Negative-Edge Waterfront Swimming Pool',
+      'Backwater Lagoon & Ocean Horizon Vistas',
+      'Balinese Tropical Teak Open Pavilion Style',
+      'Organic Mango & Coconut Orchard Grounds',
+      'Solar Hybrid Grid with Battery Backup',
+      'Gated Private Community with 24/7 Guards',
+      'Clear DTCP & Coastal Clear Title'
+    ],
+    nearby: [
+      { name: 'Covelong Point Surfing School & Beach', distance: '400 m', type: 'Beach', rating: 4.9 },
+      { name: 'Taj Fisherman’s Cove Resort & Spa', distance: '1.1 km', type: 'Resort', rating: 4.9 },
+      { name: 'Muttukadu Boat House & Water Sports Club', distance: '2.5 km', type: 'Recreation', rating: 4.7 },
+      { name: 'Chettinad Health City Super Speciality Hospital', distance: '8.5 km', type: 'Hospital', rating: 4.8 },
+      { name: 'Chennai International Airport (MAA)', distance: '28 km', type: 'Airport', rating: 4.8 }
+    ],
+    legalSection: {
+      ecStatus: '30-Year Encumbrance Certified by Chengalpattu Registrar',
+      reraNumber: 'TN/01/Building/4910/2024',
+      ownershipVerification: 'DTCP Layout & CRZ Sanctioned • Patta Freehold'
+    },
+    areaInsights: {
+      areaName: 'Covelong - Muttukadu, ECR Chennai',
+      areaAvgPriceSqFt: 19800,
+      last1YearGrowth: 19.5,
+      demandScore: 9.6,
+      investmentScore: 9.4
+    },
+    agent: AGENTS_DATA[4],
+    createdAt: '2026-03-20'
   }
 ];
 

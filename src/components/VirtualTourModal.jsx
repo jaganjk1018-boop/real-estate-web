@@ -4,31 +4,27 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { 
   X, 
-  RotateCw, 
-  ZoomIn, 
-  ZoomOut, 
-  Info, 
   Calendar,
-  Layers
+  Layers,
+  Sparkles,
+  BedDouble,
+  Bath,
+  Maximize2
 } from 'lucide-react';
-import { formatPrice, formatLocalizedPrice } from '../lib/utils';
+import { formatLocalizedPrice, formatLocalizedArea } from '../lib/utils';
 import { useRealEstateStore } from '../lib/store';
+import ThreeDVirtualTourViewer from './ThreeDVirtualTourViewer';
 
 export default function VirtualTourModal({ property, isOpen, onClose, onScheduleVisit }) {
   const { currency, unit } = useRealEstateStore();
   const [mounted, setMounted] = useState(false);
   const [currentRoomIndex, setCurrentRoomIndex] = useState(0);
-  const [zoom, setZoom] = useState(1);
-  const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-  const [activeHotspot, setActiveHotspot] = useState(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Lock background page scroll so page stays stationary ("standed")
+  // Lock background page scroll while modal is active
   useEffect(() => {
     if (!isOpen) return;
 
@@ -60,218 +56,153 @@ export default function VirtualTourModal({ property, isOpen, onClose, onSchedule
     };
   }, [isOpen, onClose]);
 
+  // Reset room index when opened for a new property
+  useEffect(() => {
+    if (isOpen) {
+      setCurrentRoomIndex(0);
+    }
+  }, [isOpen, property?.id]);
+
   if (!isOpen || !property || !mounted) return null;
 
-  const rooms = property.virtualTourRooms || [
-    {
-      id: 'default-room',
-      name: 'Main Living Gallery',
-      panoramaUrl: property.images[0],
-      description: 'Expansive open-plan living area with bespoke finishes and direct terrace flow.',
-      hotspots: [
-        { id: 'hs-def', title: 'Architectural Glazing', x: 50, y: 50, description: 'Motorized dual-pane acoustic glass systems.' }
-      ]
-    }
-  ];
+  const rooms = property.virtualTourRooms && property.virtualTourRooms.length > 0 
+    ? property.virtualTourRooms 
+    : [
+        {
+          id: 'room-1',
+          name: 'Main Living Salon',
+          panoramaUrl: property.images?.[0] || '/images/images.jpg',
+          description: 'Expansive open-plan living area with bespoke finishes and direct terrace flow.'
+        }
+      ];
 
   const currentRoom = rooms[currentRoomIndex] || rooms[0];
 
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    setDragStart({ x: e.clientX - panOffset.x, y: e.clientY - panOffset.y });
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    const newX = e.clientX - dragStart.x;
-    const newY = e.clientY - dragStart.y;
-    // Bound the pan
-    setPanOffset({
-      x: Math.max(-200, Math.min(200, newX)),
-      y: Math.max(-100, Math.min(100, newY)),
-    });
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const resetView = () => {
-    setZoom(1);
-    setPanOffset({ x: 0, y: 0 });
-  };
-
   return createPortal(
-    <div role="dialog" aria-modal="true" className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/75 backdrop-blur-sm p-2 sm:p-6 animate-in fade-in duration-300">
-      
+    <div 
+      role="dialog" 
+      aria-modal="true" 
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/85 backdrop-blur-md p-1 sm:p-4 md:p-6 animate-in fade-in duration-300"
+    >
       {/* Modal Container */}
-      <div className="relative w-full max-w-6xl h-[90vh] bg-white rounded-3xl overflow-hidden border-2 border-[#D4AF37]/40 shadow-2xl flex flex-col">
+      <div className="relative w-full max-w-[1400px] h-[92vh] bg-[#070c14] rounded-3xl overflow-hidden border-2 border-[#D4AF37]/50 shadow-2xl flex flex-col">
         
         {/* Top Header Bar */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-[#FAF8F5] z-20">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded bg-[#D4AF37]/15 text-[#996515] text-[10px] font-extrabold uppercase tracking-widest border border-[#D4AF37]/30">
-                Interactive 3D Tour
-              </span>
-              <h3 className="text-lg font-bold text-[#1E3A5F] font-serif truncate max-w-md">
+        <div className="flex items-center justify-between px-5 sm:px-7 py-3.5 border-b border-white/10 bg-[#0B1523] z-20 shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#1E3A5F] border border-[#D4AF37]/60 flex items-center justify-center text-[#D4AF37] font-bold shadow-md shrink-0">
+              <span className="font-serif font-black text-sm">3D</span>
+            </div>
+            
+            <div className="truncate">
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded bg-[#D4AF37]/20 text-[#D4AF37] text-[9px] font-extrabold uppercase tracking-widest border border-[#D4AF37]/40">
+                  Spatial 4K WebGL Scan
+                </span>
+                <span className="text-[11px] text-gray-400 hidden sm:inline">•</span>
+                <span className="text-[11px] text-emerald-400 font-semibold hidden sm:flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Matterport LiDAR Calibrated
+                </span>
+              </div>
+              <h3 className="text-base sm:text-lg font-bold text-white font-serif truncate max-w-lg">
                 {property.title}
               </h3>
             </div>
-            <p className="text-xs text-[#4B5563] mt-0.5">
-              Current Perspective: <span className="text-[#1E3A5F] font-bold">{currentRoom.name}</span>
-            </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={() => onScheduleVisit?.(property)}
-              className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#1E3A5F] hover:bg-[#162C48] text-white font-bold text-xs transition-all shadow-md"
+              className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#AA820A] hover:brightness-110 text-[#1E3A5F] font-bold text-xs uppercase tracking-wider transition-all shadow-lg"
             >
-              <Calendar className="w-3.5 h-3.5 text-[#D4AF37]" />
-              <span>Book In-Person Visit</span>
+              <Calendar className="w-3.5 h-3.5" />
+              <span>Book VIP Concierge Visit</span>
             </button>
+
             <button
               onClick={onClose}
-              className="p-2 rounded-xl bg-white hover:bg-gray-100 text-[#4B5563] hover:text-[#1E3A5F] border border-gray-200 transition-all"
+              className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white border border-white/15 transition-all"
+              title="Close 3D Tour (Esc)"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
         </div>
 
-        {/* 3D Panorama Interactive Canvas */}
-        <div 
-          className="relative flex-1 bg-black overflow-hidden select-none cursor-grab active:cursor-grabbing"
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-        >
-          {/* Main Panorama Image */}
-          <div 
-            className="w-full h-full flex items-center justify-center transition-transform duration-100 ease-out"
-            style={{
-              transform: `scale(${zoom}) translate(${panOffset.x}px, ${panOffset.y}px)`
-            }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={currentRoom.panoramaUrl}
-              alt={currentRoom.name}
-              className="w-full h-full object-cover pointer-events-none"
-            />
-
-            {/* Interactive Hotspots */}
-            {currentRoom.hotspots?.map((hs) => (
-              <div
-                key={hs.id}
-                style={{ top: `${hs.y}%`, left: `${hs.x}%` }}
-                className="absolute -translate-x-1/2 -translate-y-1/2 z-10"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActiveHotspot(activeHotspot?.id === hs.id ? null : hs);
-                }}
-              >
-                <div className="relative group cursor-pointer pointer-events-auto">
-                  <div className="w-9 h-9 rounded-full bg-[#D4AF37] text-black flex items-center justify-center shadow-lg shadow-[#D4AF37]/50 animate-pulse hover:scale-125 transition-transform">
-                    <Info className="w-4 h-4 stroke-[2.5]" />
-                  </div>
-                  <div className="w-12 h-12 rounded-full border-2 border-[#D4AF37]/60 absolute -inset-1.5 animate-ping pointer-events-none" />
-
-                  {/* Hotspot Hover Label */}
-                  <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 bg-[#1E3A5F] border border-[#D4AF37]/40 rounded-lg px-2.5 py-1 text-[11px] font-bold text-white whitespace-nowrap shadow-xl">
-                    {hs.title}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Active Hotspot Info Card */}
-          {activeHotspot && (
-            <div className="absolute top-6 left-6 max-w-xs bg-white/95 border-2 border-[#D4AF37] p-4 rounded-2xl shadow-2xl backdrop-blur-md z-30 animate-in fade-in slide-in-from-top-4 text-[#1F2937]">
-              <div className="flex items-center justify-between pb-1 border-b border-gray-200 mb-2">
-                <span className="text-xs font-bold text-[#1E3A5F]">{activeHotspot.title}</span>
-                <button
-                  onClick={() => setActiveHotspot(null)}
-                  className="text-gray-400 hover:text-[#1E3A5F]"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              </div>
-              <p className="text-xs text-[#4B5563] leading-relaxed">
-                {activeHotspot.description}
-              </p>
-            </div>
-          )}
-
-          {/* Floating Canvas Controls */}
-          <div className="absolute bottom-6 right-6 flex items-center gap-2 bg-white/90 backdrop-blur-md p-1.5 rounded-2xl border border-gray-200 z-20 shadow-md">
-            <button
-              onClick={() => setZoom((prev) => Math.min(prev + 0.25, 2.5))}
-              className="p-2 text-[#1E3A5F] hover:bg-gray-100 rounded-xl transition-colors"
-              title="Zoom In"
-            >
-              <ZoomIn className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setZoom((prev) => Math.max(prev - 0.25, 0.75))}
-              className="p-2 text-[#1E3A5F] hover:bg-gray-100 rounded-xl transition-colors"
-              title="Zoom Out"
-            >
-              <ZoomOut className="w-4 h-4" />
-            </button>
-            <button
-              onClick={resetView}
-              className="p-2 text-[#1E3A5F] hover:bg-gray-100 rounded-xl transition-colors"
-              title="Reset View"
-            >
-              <RotateCw className="w-4 h-4" />
-            </button>
-          </div>
-
-          {/* Pan Navigation Hint */}
-          <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] text-[#1E3A5F] border border-gray-200 pointer-events-none font-medium shadow-sm">
-            💡 Click and drag to pan 360° • Click glowing dots for details
-          </div>
+        {/* 3D WebGL Spatial Viewer Engine */}
+        <div className="relative flex-1 overflow-hidden">
+          <ThreeDVirtualTourViewer
+            property={property}
+            currentRoomIndex={currentRoomIndex}
+            onRoomChange={(idx) => setCurrentRoomIndex(idx)}
+            onScheduleVisit={onScheduleVisit}
+          />
         </div>
 
-        {/* Bottom Room Switcher Strip */}
-        <div className="px-6 py-3 bg-[#FAF8F5] border-t border-gray-200 flex items-center justify-between gap-4 z-20">
-          <div className="flex items-center gap-2 overflow-x-auto py-1">
-            <span className="text-[11px] font-bold text-[#4B5563] uppercase tracking-wider shrink-0 flex items-center gap-1">
+        {/* Bottom Room Selector Strip */}
+        <div className="px-5 sm:px-7 py-3 bg-[#0B1523] border-t border-white/10 flex items-center justify-between gap-4 z-20 shrink-0">
+          
+          {/* Room Thumbnails / Pills */}
+          <div className="flex items-center gap-2 overflow-x-auto py-1 scrollbar-thin">
+            <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest shrink-0 flex items-center gap-1.5 mr-1">
               <Layers className="w-3.5 h-3.5 text-[#D4AF37]" />
-              Spaces:
+              Spaces ({rooms.length}):
             </span>
-            {rooms.map((room, idx) => (
-              <button
-                key={room.id}
-                onClick={() => {
-                  setCurrentRoomIndex(idx);
-                  resetView();
-                  setActiveHotspot(null);
-                }}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
-                  currentRoomIndex === idx
-                    ? 'bg-[#1E3A5F] text-white shadow-sm font-bold'
-                    : 'bg-white text-[#1F2937] hover:bg-gray-100 border border-gray-200'
-                }`}
-              >
-                {room.name}
-              </button>
-            ))}
+
+            {rooms.map((room, idx) => {
+              const isActive = currentRoomIndex === idx;
+              return (
+                <button
+                  key={room.id || idx}
+                  onClick={() => setCurrentRoomIndex(idx)}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-2 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#D4AF37] to-[#AA820A] text-[#1E3A5F] font-bold shadow-md shadow-[#D4AF37]/30 scale-102'
+                      : 'bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 hover:border-white/20'
+                  }`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#1E3A5F]' : 'bg-[#D4AF37]'}`} />
+                  <span>{room.name}</span>
+                </button>
+              );
+            })}
           </div>
 
-          <div className="hidden md:flex items-center gap-3 text-xs text-[#4B5563] shrink-0">
-            <span>Price: <strong className="text-[#1E3A5F] font-serif text-sm font-black">{formatLocalizedPrice(property.price, currency, property.priceSuffix, property.currency)}</strong></span>
-            <span>•</span>
-            <span>{property.bedrooms} Beds, {property.bathrooms} Baths</span>
+          {/* Quick Estate Metadata */}
+          <div className="hidden lg:flex items-center gap-4 text-xs text-gray-300 shrink-0 border-l border-white/10 pl-4 font-mono">
+            <div>
+              <span className="text-gray-500 uppercase text-[9px] block">Price</span>
+              <strong className="text-[#D4AF37] font-serif text-sm font-black">
+                {formatLocalizedPrice(property.price, currency, property.priceSuffix, property.currency)}
+              </strong>
+            </div>
+
+            <div className="flex items-center gap-3 text-gray-300">
+              <span className="flex items-center gap-1">
+                <BedDouble className="w-3.5 h-3.5 text-[#D4AF37]" />
+                {property.bedrooms} Beds
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1">
+                <Bath className="w-3.5 h-3.5 text-[#D4AF37]" />
+                {property.bathrooms} Baths
+              </span>
+              {property.areaSqFt && (
+                <>
+                  <span>•</span>
+                  <span className="flex items-center gap-1">
+                    <Maximize2 className="w-3.5 h-3.5 text-[#D4AF37]" />
+                    {formatLocalizedArea(property.areaSqFt, unit)}
+                  </span>
+                </>
+              )}
+            </div>
           </div>
+
         </div>
 
       </div>
-
     </div>,
     document.body
   );

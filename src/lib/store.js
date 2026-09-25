@@ -2,6 +2,7 @@ import React, { useState, useEffect, createContext, useContext } from 'react';
 import { PROPERTIES_DATA } from '../data/properties';
 import { INITIAL_BROKER_RATES } from '../data/areaMarketData';
 import { DEFAULT_SETTINGS, INITIAL_SETTINGS_LOGS } from '../data/defaultSettings';
+import { subscribeToFirebaseAuthState, firebaseLogout, isFirebaseConfigured } from './firebase';
 
 const DEMO_USERS = [
   {
@@ -145,9 +146,17 @@ function useRealEstateStoreInternal() {
 
       const savedProps = localStorage.getItem('aura_custom_properties');
       if (savedProps) {
-        const parsed = JSON.parse(savedProps);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setProperties(parsed);
+        try {
+          const parsed = JSON.parse(savedProps);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            const baseIds = new Set(PROPERTIES_DATA.map((p) => p.id));
+            const customAdditions = parsed.filter((p) => !baseIds.has(p.id));
+            const parsedMap = new Map(parsed.map((p) => [p.id, p]));
+            const mergedBase = PROPERTIES_DATA.map((p) => parsedMap.get(p.id) || p);
+            setProperties([...customAdditions, ...mergedBase]);
+          }
+        } catch (e) {
+          console.error('Error hydrating custom properties', e);
         }
       }
 
@@ -166,6 +175,26 @@ function useRealEstateStoreInternal() {
     } finally {
       setIsLoaded(true);
     }
+  }, []);
+
+  // Listen to live Firebase Auth state changes
+  useEffect(() => {
+    let unsubscribe = () => {};
+    try {
+      unsubscribe = subscribeToFirebaseAuthState((fbUser) => {
+        if (fbUser) {
+          setCurrentUser(fbUser);
+          try {
+            localStorage.setItem('aura_user', JSON.stringify(fbUser));
+          } catch (e) {}
+        }
+      });
+    } catch (err) {
+      console.warn('Firebase auth listener notification:', err);
+    }
+    return () => {
+      if (typeof unsubscribe === 'function') unsubscribe();
+    };
   }, []);
 
   const setCurrency = (newCurr) => {
@@ -414,6 +443,9 @@ function useRealEstateStoreInternal() {
   };
 
   const logout = () => {
+    try {
+      firebaseLogout().catch(() => {});
+    } catch (e) {}
     loginAs(null);
   };
 
@@ -656,7 +688,8 @@ function useRealEstateStoreInternal() {
     updatePlatformSettings,
     saveAllPlatformSettings,
     resetPlatformSettings,
-    addSettingsLog
+    addSettingsLog,
+    isFirebaseConfigured: isFirebaseConfigured()
   };
 }
 

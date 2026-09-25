@@ -40,7 +40,7 @@ const REGIONS = [
   { id: 'maharashtra', name: '🏙️ Mumbai (Worli Penthouse)', center: '19.0178,72.8173', zoom: 15 },
   { id: 'karnataka', name: '🌿 Bengaluru (Indiranagar Villa)', center: '12.9784,77.6408', zoom: 15 },
   { id: 'delhi', name: '🏛️ Delhi NCR (Lutyens Mansion)', center: '28.6015,77.2185', zoom: 15 },
-  { id: 'tamilnadu', name: '🌊 Tamil Nadu (Chennai ECR & Plots)', center: '12.9150,80.2520', zoom: 15 },
+  { id: 'tamilnadu', name: '🌊 Chennai / Tamil Nadu (Boat Club, Poes Garden, ECR)', center: '13.0100,80.2500', zoom: 12 },
   { id: 'telangana', name: '💎 Hyderabad (Jubilee Hills)', center: '17.4319,78.4073', zoom: 15 },
   { id: 'goa', name: '🏖️ Goa (Candolim Beach)', center: '15.5186,73.7667', zoom: 15 },
   { id: 'kerala', name: '🌴 Kerala (Vembanad Backwaters)', center: '9.6175,76.4278', zoom: 15 },

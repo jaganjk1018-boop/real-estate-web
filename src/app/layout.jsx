@@ -160,6 +160,9 @@ export default function RootLayout({ children }) {
           content="Discover trophy estates, duplex penthouses, waterfront sanctuaries, and prime investments with JK Realty." 
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body 
         suppressHydrationWarning 

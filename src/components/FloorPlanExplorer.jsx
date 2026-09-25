@@ -7,16 +7,19 @@ import {
   Sun, 
   Moon, 
   Sunset, 
-  Compass
+  Compass,
+  Box
 } from 'lucide-react';
 import { useRealEstateStore } from '../lib/store';
 import { formatLocalizedArea } from '../lib/utils';
+import ThreeDFloorPlanViewer from './ThreeDFloorPlanViewer';
 
 export default function FloorPlanExplorer({ property, onOpenTourRoom }) {
   const { unit } = useRealEstateStore();
   const [activeLevel, setActiveLevel] = useState('level-1');
   const [activeRoomId, setActiveRoomId] = useState('room-salon');
   const [lightingMode, setLightingMode] = useState('golden'); // 'golden' | 'daylight' | 'night'
+  const [planViewFormat, setPlanViewFormat] = useState('2d'); // '2d' | '3d'
 
   // Dynamic levels data
   const levels = [
@@ -178,46 +181,74 @@ export default function FloorPlanExplorer({ property, onOpenTourRoom }) {
           </p>
         </div>
 
-        {/* Lighting Simulation Toggle */}
-        <div className="flex items-center gap-2 self-start lg:self-center">
-          <span className="text-[10px] uppercase tracking-widest text-[#1E3A5F] font-bold">Ambiance:</span>
-          <div className="flex items-center gap-1 bg-[#FAF8F5] p-1 rounded-2xl border border-gray-200 shadow-sm">
+        {/* View Format (2D vs 3D) & Lighting Simulation Toggle */}
+        <div className="flex flex-wrap items-center gap-3 self-start lg:self-center">
+          {/* Format Switcher */}
+          <div className="flex items-center gap-1 bg-white p-1 rounded-2xl border border-gray-200 shadow-sm">
             <button
-              onClick={() => setLightingMode('golden')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all ${
-                lightingMode === 'golden'
-                  ? 'bg-[#D4AF37] text-[#1E3A5F] font-bold shadow-sm'
+              onClick={() => setPlanViewFormat('2d')}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                planViewFormat === '2d'
+                  ? 'bg-[#1E3A5F] text-white shadow-sm'
                   : 'text-[#4B5563] hover:text-[#1E3A5F]'
               }`}
-              title="Golden Hour Sunset"
             >
-              <Sunset className="w-3.5 h-3.5" />
-              <span>Sunset Dusk</span>
+              2D Blueprint
             </button>
             <button
-              onClick={() => setLightingMode('daylight')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all ${
-                lightingMode === 'daylight'
-                  ? 'bg-[#1E3A5F] text-white font-semibold shadow-sm'
+              onClick={() => setPlanViewFormat('3d')}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+                planViewFormat === '3d'
+                  ? 'bg-[#D4AF37] text-[#1E3A5F] shadow-sm shadow-[#D4AF37]/30'
                   : 'text-[#4B5563] hover:text-[#1E3A5F]'
               }`}
-              title="Natural Daylight"
             >
-              <Sun className="w-3.5 h-3.5" />
-              <span>Daylight</span>
+              <Box className="w-3.5 h-3.5" />
+              <span>3D Isometric</span>
             </button>
-            <button
-              onClick={() => setLightingMode('night')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all ${
-                lightingMode === 'night'
-                  ? 'bg-slate-800 text-white font-semibold shadow-sm'
-                  : 'text-[#4B5563] hover:text-[#1E3A5F]'
-              }`}
-              title="Night LED Architecture"
-            >
-              <Moon className="w-3.5 h-3.5" />
-              <span>Night LED</span>
-            </button>
+          </div>
+
+          {/* Lighting Simulation Toggle */}
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] uppercase tracking-widest text-[#1E3A5F] font-bold">Ambiance:</span>
+            <div className="flex items-center gap-1 bg-[#FAF8F5] p-1 rounded-2xl border border-gray-200 shadow-sm">
+              <button
+                onClick={() => setLightingMode('golden')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all ${
+                  lightingMode === 'golden'
+                    ? 'bg-[#D4AF37] text-[#1E3A5F] font-bold shadow-sm'
+                    : 'text-[#4B5563] hover:text-[#1E3A5F]'
+                }`}
+                title="Golden Hour Sunset"
+              >
+                <Sunset className="w-3.5 h-3.5" />
+                <span>Sunset Dusk</span>
+              </button>
+              <button
+                onClick={() => setLightingMode('daylight')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all ${
+                  lightingMode === 'daylight'
+                    ? 'bg-[#1E3A5F] text-white font-semibold shadow-sm'
+                    : 'text-[#4B5563] hover:text-[#1E3A5F]'
+                }`}
+                title="Natural Daylight"
+              >
+                <Sun className="w-3.5 h-3.5" />
+                <span>Daylight</span>
+              </button>
+              <button
+                onClick={() => setLightingMode('night')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all ${
+                  lightingMode === 'night'
+                    ? 'bg-slate-800 text-white font-semibold shadow-sm'
+                    : 'text-[#4B5563] hover:text-[#1E3A5F]'
+                }`}
+                title="Night LED Architecture"
+              >
+                <Moon className="w-3.5 h-3.5" />
+                <span>Night LED</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -245,21 +276,32 @@ export default function FloorPlanExplorer({ property, onOpenTourRoom }) {
       {/* Main Interactive Grid: Blueprint + Room Spec Card */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
         
-        {/* Architectural SVG Canvas (7 cols) */}
+        {/* Architectural Canvas: 2D SVG or 3D WebGL (7 cols) */}
         <div className={`lg:col-span-7 rounded-3xl border border-gray-200 p-6 relative overflow-hidden ${currentStyle.bg} min-h-[420px] flex flex-col justify-between shadow-card transition-colors duration-500`}>
           
           {/* Top level description */}
-          <div className="flex items-center justify-between text-xs text-[#4B5563] z-10">
-            <span className="font-bold text-[#1E3A5F] tracking-wider uppercase text-[11px]">
-              {currentLevel.title}
+          <div className="flex items-center justify-between text-xs text-[#4B5563] z-10 mb-2">
+            <span className="font-bold text-[#1E3A5F] tracking-wider uppercase text-[11px] flex items-center gap-1.5">
+              {planViewFormat === '3d' && <Box className="w-3.5 h-3.5 text-[#D4AF37]" />}
+              {currentLevel.title} {planViewFormat === '3d' ? '(3D Model)' : '(Blueprint)'}
             </span>
             <span className="text-[#996515] font-semibold">
               Gross Footprint: {formatLocalizedArea(currentLevel.areaSqFt, unit)}
             </span>
           </div>
 
-          {/* SVG Blueprint Rendering */}
-          <div className="relative w-full h-[320px] my-auto">
+          {/* Rendering: 3D WebGL Model vs 2D SVG Blueprint */}
+          {planViewFormat === '3d' ? (
+            <div className="my-auto py-2">
+              <ThreeDFloorPlanViewer
+                level={currentLevel}
+                activeRoomId={activeRoomId}
+                onSelectRoom={(id) => setActiveRoomId(id)}
+                lightingMode={lightingMode}
+              />
+            </div>
+          ) : (
+            <div className="relative w-full h-[320px] my-auto">
             <svg 
               className="w-full h-full"
               viewBox="0 0 100 100" 
@@ -334,8 +376,9 @@ export default function FloorPlanExplorer({ property, onOpenTourRoom }) {
               })}
             </svg>
           </div>
+        )}
 
-          {/* Bottom helper prompt */}
+        {/* Bottom helper prompt */}
           <div className="text-[11px] text-[#4B5563] flex items-center justify-between border-t border-gray-200 pt-3 z-10 font-medium">
             <span>Tap any room boundary to inspect engineering specs</span>
             <span className="text-[#996515] font-semibold flex items-center gap-1">

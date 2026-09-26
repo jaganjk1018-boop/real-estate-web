@@ -11,9 +11,23 @@ import {
   Bath,
   Maximize2
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import { formatLocalizedPrice, formatLocalizedArea } from '../lib/utils';
 import { useRealEstateStore } from '../lib/store';
-import ThreeDVirtualTourViewer from './ThreeDVirtualTourViewer';
+
+const ThreeDVirtualTourViewer = dynamic(
+  () => import('./ThreeDVirtualTourViewer'),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full bg-[#070c14] flex flex-col items-center justify-center text-center p-6 text-white min-h-[420px]">
+        <div className="w-10 h-10 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin mb-4" />
+        <p className="text-xs font-serif tracking-widest text-[#D4AF37] uppercase">Initializing 3D Spatial Tour Engine...</p>
+        <span className="text-[10px] text-gray-400 mt-1">Calibrating WebGL architectural shaders</span>
+      </div>
+    )
+  }
+);
 
 export default function VirtualTourModal({ property, isOpen, onClose, onScheduleVisit }) {
   const { currency, unit } = useRealEstateStore();

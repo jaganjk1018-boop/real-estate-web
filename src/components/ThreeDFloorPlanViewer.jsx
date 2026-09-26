@@ -216,9 +216,28 @@ export default function ThreeDFloorPlanViewer({
     return () => {
       window.removeEventListener('resize', handleResize);
       if (animFrameIdRef.current) cancelAnimationFrame(animFrameIdRef.current);
-      renderer.dispose();
+      if (rendererRef.current) {
+        rendererRef.current.dispose();
+        rendererRef.current.forceContextLoss?.();
+      }
       podiumGeo.dispose();
       podiumMat.dispose();
+      if (sceneRef.current) {
+        sceneRef.current.traverse((child) => {
+          if (child.geometry) child.geometry.dispose();
+          if (child.material) {
+            if (Array.isArray(child.material)) {
+              child.material.forEach((m) => {
+                if (m.map) m.map.dispose();
+                m.dispose();
+              });
+            } else {
+              if (child.material.map) child.material.map.dispose();
+              child.material.dispose();
+            }
+          }
+        });
+      }
     };
   }, [level, activeRoomId]);
 

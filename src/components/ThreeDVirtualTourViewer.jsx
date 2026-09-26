@@ -114,7 +114,6 @@ export default function ThreeDVirtualTourViewer({
   const [selectedMeasurement, setSelectedMeasurement] = useState(null);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [fov, setFov] = useState(75);
-  const [cameraAzimuth, setCameraAzimuth] = useState(0); // For compass radar HUD
   const [isLoadingTexture, setIsLoadingTexture] = useState(true);
   const [snapshotFeedback, setSnapshotFeedback] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -128,6 +127,9 @@ export default function ThreeDVirtualTourViewer({
   const animFrameIdRef = useRef(null);
   const audioContextRef = useRef(null);
   const audioNodesRef = useRef(null);
+  const compassConeRef = useRef(null);
+  const compassTextRef = useRef(null);
+  const hotspotDomsRef = useRef({});
 
   // Coordinate tracking for 360 look
   const sphericalState = useRef({
@@ -527,7 +529,43 @@ export default function ThreeDVirtualTourViewer({
         camera.lookAt(camera.target);
 
         const heading = (Math.round(state.lon) % 360 + 360) % 360;
-        setCameraAzimuth(heading);
+        
+        // Direct DOM update of Compass Cone & Heading (Smooth 60fps without React re-render)
+        if (compassConeRef.current) {
+          compassConeRef.current.style.transform = `rotate(${-heading}deg)`;
+        }
+        if (compassTextRef.current) {
+          const dir = heading >= 315 || heading < 45 ? 'NORTH' : heading < 135 ? 'EAST' : heading < 225 ? 'SOUTH' : 'WEST';
+          compassTextRef.current.textContent = `${heading}° ${dir}`;
+        }
+
+        // Direct DOM projection of 3D Hotspots (Zero React re-render lag)
+        if (viewMode === 'photosphere' && containerRef.current) {
+          const w = containerRef.current.clientWidth;
+          const h = containerRef.current.clientHeight;
+          for (let i = 0; i < currentHotspots.length; i++) {
+            const hs = currentHotspots[i];
+            const el = hotspotDomsRef.current[hs.id];
+            if (!el) continue;
+            const phiHs = THREE.MathUtils.degToRad(90 - hs.lat);
+            const thetaHs = THREE.MathUtils.degToRad(hs.lon);
+            const radius = 480;
+            const pos = new THREE.Vector3(
+              radius * Math.sin(phiHs) * Math.cos(thetaHs),
+              radius * Math.cos(phiHs),
+              radius * Math.sin(phiHs) * Math.sin(thetaHs)
+            );
+            pos.project(camera);
+            if (pos.z < 1) {
+              const screenX = (pos.x * 0.5 + 0.5) * w;
+              const screenY = (-(pos.y * 0.5) + 0.5) * h;
+              el.style.transform = `translate3d(${screenX}px, ${screenY}px, 0) translate(-50%, -50%)`;
+              el.style.display = 'block';
+            } else {
+              el.style.display = 'none';
+            }
+          }
+        }
 
       } else {
         if (isAutoRotating && !state.isPointerDown) {
@@ -578,10 +616,32 @@ export default function ThreeDVirtualTourViewer({
       if (animFrameIdRef.current) {
         cancelAnimationFrame(animFrameIdRef.current);
       }
-      renderer.dispose();
+      if (rendererRef.current) {
+        rendererRef.current.dispose();
+        rendererRef.current.forceContextLoss?.();
+      }
       sphereGeo.dispose();
       sphereMat.dispose();
       texture.dispose();
+      if (sceneRef.current) {
+        sceneRef.current.traverse((child) => {
+          if (child.geometry) child.geometry.dispose();
+          if (child.material) {
+            if (Array.isArray(child.material)) {
+              child.material.forEach((m) => {
+                if (m.map) m.map.dispose();
+                m.dispose();
+              });
+            } else {
+              if (child.material.map) child.material.map.dispose();
+              child.material.dispose();
+            }
+          }
+        });
+      }
+      if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
+        audioContextRef.current.close().catch(() => {});
+      }
     };
   }, [currentRoom.panoramaUrl, fov, viewMode, isAutoRotating, createDollhouseModel]);
 
@@ -741,53 +801,7 @@ export default function ThreeDVirtualTourViewer({
     }
   };
 
-  // Calculate 2D Screen Positions for 3D Hotspots in Photosphere
-  const [screenHotspots, setScreenHotspots] = useState([]);
 
-  useEffect(() => {
-    if (viewMode !== 'photosphere') {
-      setScreenHotspots([]);
-      return;
-    }
-
-    let intervalId;
-    const updatePositions = () => {
-      if (!cameraRef.current || !containerRef.current) return;
-      const cam = cameraRef.current;
-      const w = containerRef.current.clientWidth;
-      const h = containerRef.current.clientHeight;
-
-      const updated = currentHotspots.map((hs) => {
-        const phi = THREE.MathUtils.degToRad(90 - hs.lat);
-        const theta = THREE.MathUtils.degToRad(hs.lon);
-        const radius = 480;
-
-        const pos = new THREE.Vector3(
-          radius * Math.sin(phi) * Math.cos(theta),
-          radius * Math.cos(phi),
-          radius * Math.sin(phi) * Math.sin(theta)
-        );
-
-        pos.project(cam);
-
-        const isVisible = pos.z < 1;
-        const screenX = (pos.x * 0.5 + 0.5) * w;
-        const screenY = (-(pos.y * 0.5) + 0.5) * h;
-
-        return {
-          ...hs,
-          isVisible,
-          screenX,
-          screenY
-        };
-      });
-
-      setScreenHotspots(updated);
-    };
-
-    intervalId = setInterval(updatePositions, 33);
-    return () => clearInterval(intervalId);
-  }, [viewMode, currentHotspots]);
 
   return (
     <div 
@@ -943,35 +957,33 @@ export default function ThreeDVirtualTourViewer({
         </div>
       </div>
 
-      {/* 3D SPATIAL HOTSPOTS (Projected in 3D Space) */}
-      {viewMode === 'photosphere' && screenHotspots.map((hs) => {
-        if (!hs.isVisible) return null;
-
-        return (
-          <div
-            key={hs.id}
-            style={{
-              transform: `translate(${hs.screenX}px, ${hs.screenY}px) translate(-50%, -50%)`
-            }}
-            className="absolute top-0 left-0 z-10 pointer-events-auto transition-transform duration-75"
+      {/* 3D SPATIAL HOTSPOTS (Direct Hardware-Accelerated 60FPS DOM Positioning) */}
+      {viewMode === 'photosphere' && currentHotspots.map((hs) => (
+        <div
+          key={hs.id}
+          ref={(el) => {
+            if (el) hotspotDomsRef.current[hs.id] = el;
+            else delete hotspotDomsRef.current[hs.id];
+          }}
+          style={{ display: 'none', willChange: 'transform' }}
+          className="absolute top-0 left-0 z-10 pointer-events-auto transition-transform duration-75"
+        >
+          <div 
+            className="relative group cursor-pointer"
+            onClick={() => handleLookAtHotspot(hs)}
           >
-            <div 
-              className="relative group cursor-pointer"
-              onClick={() => handleLookAtHotspot(hs)}
-            >
-              <div className="w-9 h-9 rounded-full bg-[#1E3A5F]/90 border-2 border-[#D4AF37] text-[#D4AF37] flex items-center justify-center shadow-lg shadow-[#D4AF37]/30 hover:scale-125 transition-transform">
-                <Sparkles className="w-4 h-4" />
-              </div>
-              <div className="absolute -inset-2 rounded-full border border-[#D4AF37]/40 animate-ping pointer-events-none" />
+            <div className="w-9 h-9 rounded-full bg-[#1E3A5F]/90 border-2 border-[#D4AF37] text-[#D4AF37] flex items-center justify-center shadow-lg shadow-[#D4AF37]/30 hover:scale-125 transition-transform">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div className="absolute -inset-2 rounded-full border border-[#D4AF37]/40 animate-ping pointer-events-none" />
 
-              <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 bg-[#070c14]/95 border border-[#D4AF37]/60 rounded-lg px-2.5 py-1 text-[10px] font-bold text-white whitespace-nowrap shadow-xl flex items-center gap-1.5 opacity-90 group-hover:opacity-100">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
-                <span>{hs.title}</span>
-              </div>
+            <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 bg-[#070c14]/95 border border-[#D4AF37]/60 rounded-lg px-2.5 py-1 text-[10px] font-bold text-white whitespace-nowrap shadow-xl flex items-center gap-1.5 opacity-90 group-hover:opacity-100">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
+              <span>{hs.title}</span>
             </div>
           </div>
-        );
-      })}
+        </div>
+      ))}
 
       {/* ACTIVE HOTSPOT SPECIFICATION MODAL CARD */}
       {activeHotspot && (
@@ -1080,8 +1092,9 @@ export default function ThreeDVirtualTourViewer({
 
             {/* Rotating Camera Field-of-View Cone Indicator */}
             <div
+              ref={compassConeRef}
               className="absolute inset-0 flex items-center justify-center pointer-events-none transition-transform duration-75"
-              style={{ transform: `rotate(${-cameraAzimuth}deg)` }}
+              style={{ transform: 'rotate(0deg)', willChange: 'transform' }}
             >
               <div 
                 className="w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[24px] border-b-[#D4AF37]/40 -translate-y-3 filter drop-shadow-[0_0_6px_rgba(212,175,55,0.8)]"
@@ -1090,8 +1103,8 @@ export default function ThreeDVirtualTourViewer({
             </div>
           </div>
 
-          <div className="text-[9px] font-mono text-gray-300 mt-1 font-bold">
-            {cameraAzimuth}° {cameraAzimuth >= 315 || cameraAzimuth < 45 ? 'NORTH' : cameraAzimuth < 135 ? 'EAST' : cameraAzimuth < 225 ? 'SOUTH' : 'WEST'}
+          <div ref={compassTextRef} className="text-[9px] font-mono text-gray-300 mt-1 font-bold">
+            0° NORTH
           </div>
         </div>
 

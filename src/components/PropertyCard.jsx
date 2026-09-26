@@ -22,7 +22,7 @@ import {
 import { formatLocalizedPrice, formatLocalizedArea } from '../lib/utils';
 import { useRealEstateStore } from '../lib/store';
 
-export default function PropertyCard({ 
+function PropertyCard({ 
   property, 
   onOpenTour, 
   onScheduleVisit,
@@ -318,3 +318,5 @@ export default function PropertyCard({
     </div>
   );
 }
+
+export default React.memo(PropertyCard);

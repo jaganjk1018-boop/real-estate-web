@@ -11,11 +11,12 @@ export async function POST(request) {
       );
     }
 
-    const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-    const trackingRef = `SELL-2026-${randomSuffix}`;
+    const randomSuffix = Math.floor(10000 + Math.random() * 90000);
+    const entropy = Math.random().toString(36).substring(2, 6).toUpperCase();
+    const trackingRef = `SELL-2026-${randomSuffix}-${entropy}`;
 
     const submissionRecord = {
-      id: `sell-${Date.now()}`,
+      id: `sell-${Date.now()}-${entropy}`,
       trackingRef,
       createdAt: new Date().toISOString(),
       status: 'Received',
@@ -41,7 +42,12 @@ export async function POST(request) {
         trackingRef,
         data: submissionRecord
       },
-      { status: 201 }
+      { 
+        status: 201,
+        headers: {
+          'Cache-Control': 'no-store'
+        }
+      }
     );
   } catch (error) {
     return NextResponse.json(

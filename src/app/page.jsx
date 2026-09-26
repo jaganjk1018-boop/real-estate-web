@@ -22,14 +22,16 @@ import {
   Compass,
   Ruler
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import HeroSearch from '../components/HeroSearch';
 import PropertyCard from '../components/PropertyCard';
-import VirtualTourModal from '../components/VirtualTourModal';
-import ScheduleVisitModal from '../components/ScheduleVisitModal';
-import AIRecommendationModal from '../components/AIRecommendationModal';
 import HomeMapExplorerSection from '../components/HomeMapExplorerSection';
 import ClientOnly from '../components/ClientOnly';
 import { useRealEstateStore } from '../lib/store';
+
+const VirtualTourModal = dynamic(() => import('../components/VirtualTourModal'), { ssr: false });
+const ScheduleVisitModal = dynamic(() => import('../components/ScheduleVisitModal'), { ssr: false });
+const AIRecommendationModal = dynamic(() => import('../components/AIRecommendationModal'), { ssr: false });
 
 export default function HomePage() {
   const { properties } = useRealEstateStore();
@@ -935,28 +937,34 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Global Interactive Modals */}
+      {/* Global Interactive Modals - Mounted On-Demand */}
       <ClientOnly>
-        <VirtualTourModal
-          property={tourProperty}
-          isOpen={!!tourProperty}
-          onClose={() => setTourProperty(null)}
-          onScheduleVisit={(p) => {
-            setTourProperty(null);
-            setVisitProperty(p);
-          }}
-        />
+        {tourProperty && (
+          <VirtualTourModal
+            property={tourProperty}
+            isOpen={!!tourProperty}
+            onClose={() => setTourProperty(null)}
+            onScheduleVisit={(p) => {
+              setTourProperty(null);
+              setVisitProperty(p);
+            }}
+          />
+        )}
 
-        <ScheduleVisitModal
-          property={visitProperty}
-          isOpen={!!visitProperty}
-          onClose={() => setVisitProperty(null)}
-        />
+        {visitProperty && (
+          <ScheduleVisitModal
+            property={visitProperty}
+            isOpen={!!visitProperty}
+            onClose={() => setVisitProperty(null)}
+          />
+        )}
 
-        <AIRecommendationModal
-          isOpen={isAIModalOpen}
-          onClose={() => setIsAIModalOpen(false)}
-        />
+        {isAIModalOpen && (
+          <AIRecommendationModal
+            isOpen={isAIModalOpen}
+            onClose={() => setIsAIModalOpen(false)}
+          />
+        )}
       </ClientOnly>
 
     </div>

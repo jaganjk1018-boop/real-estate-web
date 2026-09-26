@@ -19,11 +19,13 @@ import {
   Heart,
   MapPin
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import PropertyCard from '../../components/PropertyCard';
-import VirtualTourModal from '../../components/VirtualTourModal';
-import ScheduleVisitModal from '../../components/ScheduleVisitModal';
 import PropertyMapExplorer from '../../components/PropertyMapExplorer';
 import { useRealEstateStore } from '../../lib/store';
+
+const VirtualTourModal = dynamic(() => import('../../components/VirtualTourModal'), { ssr: false });
+const ScheduleVisitModal = dynamic(() => import('../../components/ScheduleVisitModal'), { ssr: false });
 import { formatPrice, formatLocalizedPrice, formatLocalizedArea } from '../../lib/utils';
 
 function PropertiesContent() {
@@ -668,22 +670,26 @@ function PropertiesContent() {
         </div>
       )}
 
-      {/* Modals */}
-      <VirtualTourModal
-        property={tourProperty}
-        isOpen={!!tourProperty}
-        onClose={() => setTourProperty(null)}
-        onScheduleVisit={(p) => {
-          setTourProperty(null);
-          setVisitProperty(p);
-        }}
-      />
+      {/* Modals - Lazy Loaded On-Demand */}
+      {tourProperty && (
+        <VirtualTourModal
+          property={tourProperty}
+          isOpen={!!tourProperty}
+          onClose={() => setTourProperty(null)}
+          onScheduleVisit={(p) => {
+            setTourProperty(null);
+            setVisitProperty(p);
+          }}
+        />
+      )}
 
-      <ScheduleVisitModal
-        property={visitProperty}
-        isOpen={!!visitProperty}
-        onClose={() => setVisitProperty(null)}
-      />
+      {visitProperty && (
+        <ScheduleVisitModal
+          property={visitProperty}
+          isOpen={!!visitProperty}
+          onClose={() => setVisitProperty(null)}
+        />
+      )}
 
     </div>
   );

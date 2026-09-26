@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, createContext, useContext } from 'react';
 import { PROPERTIES_DATA } from '../data/properties';
 import { INITIAL_BROKER_RATES } from '../data/areaMarketData';
 import { DEFAULT_SETTINGS, INITIAL_SETTINGS_LOGS } from '../data/defaultSettings';
@@ -20,6 +20,19 @@ const DEMO_USERS = [
     avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80'
   }
 ];
+
+// Asynchronous non-blocking storage writer to prevent UI thread lockup / hitching
+const asyncStorageSave = (key, value) => {
+  if (typeof window === 'undefined') return;
+  const runner = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+  runner(() => {
+    try {
+      localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value));
+    } catch (e) {
+      console.warn(`Storage write deferred notification for ${key}:`, e);
+    }
+  });
+};
 
 const RealEstateContext = createContext(null);
 
@@ -141,7 +154,7 @@ function useRealEstateStoreInternal() {
           }
         ];
         setInquiries(seedInquiries);
-        localStorage.setItem('aura_inquiries', JSON.stringify(seedInquiries));
+        asyncStorageSave('aura_inquiries', seedInquiries);
       }
 
       const savedProps = localStorage.getItem('aura_custom_properties');
@@ -184,9 +197,7 @@ function useRealEstateStoreInternal() {
       unsubscribe = subscribeToFirebaseAuthState((fbUser) => {
         if (fbUser) {
           setCurrentUser(fbUser);
-          try {
-            localStorage.setItem('aura_user', JSON.stringify(fbUser));
-          } catch (e) {}
+          asyncStorageSave('aura_user', fbUser);
         }
       });
     } catch (err) {
@@ -197,25 +208,51 @@ function useRealEstateStoreInternal() {
     };
   }, []);
 
-  const setCurrency = (newCurr) => {
-    setCurrencyState(newCurr);
-    try {
-      localStorage.setItem('aura_currency', newCurr);
-      if (typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent('aura_currency_changed', { detail: newCurr }));
-      }
-    } catch (e) {}
-  };
+  // Live Cross-Tab Multi-User Concurrency Synchronization
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handleStorageSync = (e) => {
+      if (!e.key || !e.newValue) return;
+      try {
+        if (e.key === 'aura_favorites') setFavorites(JSON.parse(e.newValue));
+        if (e.key === 'aura_compare') setCompareList(JSON.parse(e.newValue));
+        if (e.key === 'aura_currency') setCurrencyState(e.newValue);
+        if (e.key === 'aura_unit') setUnitState(e.newValue);
+        if (e.key === 'aura_inquiries') setInquiries(JSON.parse(e.newValue));
+        if (e.key === 'aura_user') setCurrentUser(JSON.parse(e.newValue));
+        if (e.key === 'aura_custom_properties') {
+          const parsed = JSON.parse(e.newValue);
+          if (Array.isArray(parsed)) setProperties(parsed);
+        }
+        if (e.key === 'aura_broker_rates') {
+          const parsed = JSON.parse(e.newValue);
+          if (Array.isArray(parsed)) setBrokerRates(parsed);
+        }
+        if (e.key === 'aura_platform_settings') {
+          const parsed = JSON.parse(e.newValue);
+          if (parsed) setPlatformSettings(parsed);
+        }
+      } catch (err) {}
+    };
+    window.addEventListener('storage', handleStorageSync);
+    return () => window.removeEventListener('storage', handleStorageSync);
+  }, []);
 
-  const setUnit = (newUnit) => {
+  const setCurrency = useCallback((newCurr) => {
+    setCurrencyState(newCurr);
+    asyncStorageSave('aura_currency', newCurr);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('aura_currency_changed', { detail: newCurr }));
+    }
+  }, []);
+
+  const setUnit = useCallback((newUnit) => {
     setUnitState(newUnit);
-    try {
-      localStorage.setItem('aura_unit', newUnit);
-      if (typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent('aura_unit_changed', { detail: newUnit }));
-      }
-    } catch (e) {}
-  };
+    asyncStorageSave('aura_unit', newUnit);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('aura_unit_changed', { detail: newUnit }));
+    }
+  }, []);
 
   useEffect(() => {
     const handleCurrencySync = (e) => {
@@ -236,21 +273,19 @@ function useRealEstateStoreInternal() {
     };
   }, [currency, unit]);
 
-  const toggleFavorite = (propertyId) => {
+  const toggleFavorite = useCallback((propertyId) => {
     setFavorites((prev) => {
       const updated = prev.includes(propertyId)
         ? prev.filter((id) => id !== propertyId)
         : [...prev, propertyId];
-      try {
-        localStorage.setItem('aura_favorites', JSON.stringify(updated));
-      } catch (e) {}
+      asyncStorageSave('aura_favorites', updated);
       return updated;
     });
-  };
+  }, []);
 
-  const isFavorite = (propertyId) => favorites.includes(propertyId);
+  const isFavorite = useCallback((propertyId) => favorites.includes(propertyId), [favorites]);
 
-  const toggleCompare = (propertyId) => {
+  const toggleCompare = useCallback((propertyId) => {
     setCompareList((prev) => {
       let updated;
       if (prev.includes(propertyId)) {
@@ -262,24 +297,22 @@ function useRealEstateStoreInternal() {
         }
         updated = [...prev, propertyId];
       }
-      try {
-        localStorage.setItem('aura_compare', JSON.stringify(updated));
-      } catch (e) {}
+      asyncStorageSave('aura_compare', updated);
       return updated;
     });
-  };
+  }, []);
 
-  const isComparing = (propertyId) => compareList.includes(propertyId);
+  const isComparing = useCallback((propertyId) => compareList.includes(propertyId), [compareList]);
 
-  const clearCompare = () => {
+  const clearCompare = useCallback(() => {
     setCompareList([]);
-    try {
-      localStorage.removeItem('aura_compare');
-    } catch (e) {}
-  };
+    if (typeof window !== 'undefined') {
+      try { localStorage.removeItem('aura_compare'); } catch (e) {}
+    }
+  }, []);
 
   // Vault Notes & Collections
-  const addVaultNote = (propertyId, text) => {
+  const addVaultNote = useCallback((propertyId, text) => {
     if (!text || !text.trim()) return;
     setVaultNotes((prev) => {
       const currentList = prev[propertyId] || [];
@@ -296,28 +329,24 @@ function useRealEstateStoreInternal() {
         ...prev,
         [propertyId]: [newNote, ...currentList]
       };
-      try {
-        localStorage.setItem('aura_vault_notes', JSON.stringify(updated));
-      } catch (e) {}
+      asyncStorageSave('aura_vault_notes', updated);
       return updated;
     });
-  };
+  }, []);
 
-  const deleteVaultNote = (propertyId, noteId) => {
+  const deleteVaultNote = useCallback((propertyId, noteId) => {
     setVaultNotes((prev) => {
       const currentList = prev[propertyId] || [];
       const updated = {
         ...prev,
         [propertyId]: currentList.filter((n) => n.id !== noteId)
       };
-      try {
-        localStorage.setItem('aura_vault_notes', JSON.stringify(updated));
-      } catch (e) {}
+      asyncStorageSave('aura_vault_notes', updated);
       return updated;
     });
-  };
+  }, []);
 
-  const createVaultCollection = (name, initialPropId = null) => {
+  const createVaultCollection = useCallback((name, initialPropId = null) => {
     if (!name || !name.trim()) return;
     setVaultCollections((prev) => {
       const newCol = {
@@ -327,14 +356,12 @@ function useRealEstateStoreInternal() {
         createdAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
       };
       const updated = [...prev, newCol];
-      try {
-        localStorage.setItem('aura_vault_collections', JSON.stringify(updated));
-      } catch (e) {}
+      asyncStorageSave('aura_vault_collections', updated);
       return updated;
     });
-  };
+  }, []);
 
-  const togglePropertyInCollection = (collectionId, propertyId) => {
+  const togglePropertyInCollection = useCallback((collectionId, propertyId) => {
     setVaultCollections((prev) => {
       const updated = prev.map((col) => {
         if (col.id === collectionId) {
@@ -348,18 +375,16 @@ function useRealEstateStoreInternal() {
         }
         return col;
       });
-      try {
-        localStorage.setItem('aura_vault_collections', JSON.stringify(updated));
-      } catch (e) {}
+      asyncStorageSave('aura_vault_collections', updated);
       return updated;
     });
-  };
+  }, []);
 
-  const addInquiry = (newInquiry) => {
+  const addInquiry = useCallback((newInquiry) => {
     const randomCode = Math.floor(1000 + Math.random() * 9000);
     const created = {
       ...newInquiry,
-      id: `inq-${Date.now()}`,
+      id: `inq-${Date.now()}-${randomCode}`,
       status: 'New',
       pipelineStage: newInquiry.pipelineStage || 'New Lead',
       vipPassId: newInquiry.vipPassId || `VIP-${randomCode}-${(newInquiry.propertyTitle || 'AURA').slice(0, 3).toUpperCase()}`,
@@ -373,84 +398,70 @@ function useRealEstateStoreInternal() {
     };
     setInquiries((prev) => {
       const updated = [created, ...prev];
-      try {
-        localStorage.setItem('aura_inquiries', JSON.stringify(updated));
-      } catch (e) {}
+      asyncStorageSave('aura_inquiries', updated);
       return updated;
     });
     return created;
-  };
+  }, []);
 
-  const updateInquiryStatus = (inquiryId, status) => {
+  const updateInquiryStatus = useCallback((inquiryId, status) => {
     setInquiries((prev) => {
       const updated = prev.map((inq) => (inq.id === inquiryId ? { ...inq, status } : inq));
-      try {
-        localStorage.setItem('aura_inquiries', JSON.stringify(updated));
-      } catch (e) {}
+      asyncStorageSave('aura_inquiries', updated);
       return updated;
     });
-  };
+  }, []);
 
-  const updateInquiryStage = (inquiryId, pipelineStage) => {
+  const updateInquiryStage = useCallback((inquiryId, pipelineStage) => {
     setInquiries((prev) => {
       const updated = prev.map((inq) => (inq.id === inquiryId ? { ...inq, pipelineStage } : inq));
-      try {
-        localStorage.setItem('aura_inquiries', JSON.stringify(updated));
-      } catch (e) {}
+      asyncStorageSave('aura_inquiries', updated);
       return updated;
     });
-  };
+  }, []);
 
-  const addProperty = (newProperty) => {
+  const addProperty = useCallback((newProperty) => {
     setProperties((prev) => {
       const updated = [newProperty, ...prev];
-      try {
-        localStorage.setItem('aura_custom_properties', JSON.stringify(updated));
-      } catch (e) {}
+      asyncStorageSave('aura_custom_properties', updated);
       return updated;
     });
-  };
+  }, []);
 
-  const updateProperty = (updatedProp) => {
+  const updateProperty = useCallback((updatedProp) => {
     setProperties((prev) => {
       const updated = prev.map((p) => (p.id === updatedProp.id ? updatedProp : p));
-      try {
-        localStorage.setItem('aura_custom_properties', JSON.stringify(updated));
-      } catch (e) {}
+      asyncStorageSave('aura_custom_properties', updated);
       return updated;
     });
-  };
+  }, []);
 
-  const deleteProperty = (id) => {
+  const deleteProperty = useCallback((id) => {
     setProperties((prev) => {
       const updated = prev.filter((p) => p.id !== id);
-      try {
-        localStorage.setItem('aura_custom_properties', JSON.stringify(updated));
-      } catch (e) {}
+      asyncStorageSave('aura_custom_properties', updated);
       return updated;
     });
-  };
+  }, []);
 
-  const loginAs = (user) => {
+  const loginAs = useCallback((user) => {
     setCurrentUser(user);
-    try {
-      if (user) {
-        localStorage.setItem('aura_user', JSON.stringify(user));
-      } else {
-        localStorage.setItem('aura_user', 'null');
-      }
-    } catch (e) {}
-  };
+    if (user) {
+      asyncStorageSave('aura_user', user);
+    } else {
+      asyncStorageSave('aura_user', null);
+    }
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     try {
       firebaseLogout().catch(() => {});
     } catch (e) {}
     loginAs(null);
-  };
+  }, [loginAs]);
 
   // Broker Rate Submissions & Admin Approval
-  const submitBrokerRate = (rateData) => {
+  const submitBrokerRate = useCallback((rateData) => {
     const newSubmission = {
       ...rateData,
       id: `br-${Date.now()}`,
@@ -460,40 +471,85 @@ function useRealEstateStoreInternal() {
     };
     setBrokerRates((prev) => {
       const updated = [newSubmission, ...prev];
-      try {
-        localStorage.setItem('aura_broker_rates', JSON.stringify(updated));
-      } catch (e) {}
+      asyncStorageSave('aura_broker_rates', updated);
       return updated;
     });
     return newSubmission;
-  };
+  }, []);
 
-  const approveBrokerRate = (rateId) => {
+  const approveBrokerRate = useCallback((rateId) => {
     setBrokerRates((prev) => {
       const updated = prev.map((item) =>
         item.id === rateId ? { ...item, status: 'approved', verifiedBadge: true } : item
       );
-      try {
-        localStorage.setItem('aura_broker_rates', JSON.stringify(updated));
-      } catch (e) {}
+      asyncStorageSave('aura_broker_rates', updated);
       return updated;
     });
-  };
+  }, []);
 
-  const rejectBrokerRate = (rateId) => {
+  const rejectBrokerRate = useCallback((rateId) => {
     setBrokerRates((prev) => {
       const updated = prev.map((item) =>
         item.id === rateId ? { ...item, status: 'rejected' } : item
       );
-      try {
-        localStorage.setItem('aura_broker_rates', JSON.stringify(updated));
-      } catch (e) {}
+      asyncStorageSave('aura_broker_rates', updated);
       return updated;
     });
-  };
+  }, []);
+
+  // Platform Settings Audit & Persistence Methods
+  const addSettingsLog = useCallback((category, action) => {
+    const newLog = {
+      id: `log-${Date.now()}`,
+      timestamp: new Date().toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }),
+      adminUser: currentUser?.name ? `${currentUser.name} (${currentUser.role || 'Admin'})` : 'Julian Montgomery (Super Admin)',
+      category,
+      action,
+      ipAddress: '192.168.1.104',
+      status: 'Success'
+    };
+    setSettingsLogs((prev) => {
+      const updated = [newLog, ...prev];
+      asyncStorageSave('aura_settings_logs', updated);
+      return updated;
+    });
+  }, [currentUser]);
+
+  const updatePlatformSettings = useCallback((categoryKey, newCategoryValues) => {
+    setPlatformSettings((prev) => {
+      const updated = {
+        ...prev,
+        [categoryKey]: {
+          ...prev[categoryKey],
+          ...newCategoryValues
+        }
+      };
+      asyncStorageSave('aura_platform_settings', updated);
+      return updated;
+    });
+    addSettingsLog(categoryKey, `Updated configuration settings for ${categoryKey}`);
+  }, [addSettingsLog]);
+
+  const saveAllPlatformSettings = useCallback((updatedSettings) => {
+    setPlatformSettings(updatedSettings);
+    asyncStorageSave('aura_platform_settings', updatedSettings);
+    addSettingsLog('Platform Engine', 'Saved comprehensive platform settings batch');
+  }, [addSettingsLog]);
+
+  const resetPlatformSettings = useCallback(() => {
+    setPlatformSettings(DEFAULT_SETTINGS);
+    asyncStorageSave('aura_platform_settings', DEFAULT_SETTINGS);
+    addSettingsLog('Platform Engine', 'Reset all 11 settings categories to factory defaults');
+  }, [addSettingsLog]);
 
   // Seller Listing Submission & Mandate Management
-  const submitSellerListing = (listingData) => {
+  const submitSellerListing = useCallback((listingData) => {
     const randomSuffix = Math.floor(1000 + Math.random() * 9000);
     const trackingRef = `SELL-2026-${randomSuffix}`;
     const newPropId = `prop-sell-${Date.now()}`;
@@ -586,68 +642,10 @@ function useRealEstateStoreInternal() {
     });
 
     return { success: true, property: newProperty, trackingRef };
-  };
+  }, [addProperty, addInquiry, currency]);
 
-  // Platform Settings Audit & Persistence Methods
-  const addSettingsLog = (category, action) => {
-    const newLog = {
-      id: `log-${Date.now()}`,
-      timestamp: new Date().toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      }),
-      adminUser: currentUser?.name ? `${currentUser.name} (${currentUser.role || 'Admin'})` : 'Julian Montgomery (Super Admin)',
-      category,
-      action,
-      ipAddress: '192.168.1.104',
-      status: 'Success'
-    };
-    setSettingsLogs((prev) => {
-      const updated = [newLog, ...prev];
-      try {
-        localStorage.setItem('aura_settings_logs', JSON.stringify(updated));
-      } catch (e) {}
-      return updated;
-    });
-  };
-
-  const updatePlatformSettings = (categoryKey, newCategoryValues) => {
-    setPlatformSettings((prev) => {
-      const updated = {
-        ...prev,
-        [categoryKey]: {
-          ...prev[categoryKey],
-          ...newCategoryValues
-        }
-      };
-      try {
-        localStorage.setItem('aura_platform_settings', JSON.stringify(updated));
-      } catch (e) {}
-      return updated;
-    });
-    addSettingsLog(categoryKey, `Updated configuration settings for ${categoryKey}`);
-  };
-
-  const saveAllPlatformSettings = (updatedSettings) => {
-    setPlatformSettings(updatedSettings);
-    try {
-      localStorage.setItem('aura_platform_settings', JSON.stringify(updatedSettings));
-    } catch (e) {}
-    addSettingsLog('Platform Engine', 'Saved comprehensive platform settings batch');
-  };
-
-  const resetPlatformSettings = () => {
-    setPlatformSettings(DEFAULT_SETTINGS);
-    try {
-      localStorage.setItem('aura_platform_settings', JSON.stringify(DEFAULT_SETTINGS));
-    } catch (e) {}
-    addSettingsLog('Platform Engine', 'Reset all 11 settings categories to factory defaults');
-  };
-
-  return {
+  // Memoize store value to prevent massive unnecessary re-render cascades
+  return useMemo(() => ({
     properties,
     favorites,
     compareList,
@@ -690,7 +688,48 @@ function useRealEstateStoreInternal() {
     resetPlatformSettings,
     addSettingsLog,
     isFirebaseConfigured: isFirebaseConfigured()
-  };
+  }), [
+    properties,
+    favorites,
+    compareList,
+    inquiries,
+    currentUser,
+    currency,
+    unit,
+    vaultNotes,
+    vaultCollections,
+    isLoaded,
+    brokerRates,
+    platformSettings,
+    settingsLogs,
+    setCurrency,
+    setUnit,
+    toggleFavorite,
+    isFavorite,
+    toggleCompare,
+    isComparing,
+    clearCompare,
+    addVaultNote,
+    deleteVaultNote,
+    createVaultCollection,
+    togglePropertyInCollection,
+    addInquiry,
+    updateInquiryStatus,
+    updateInquiryStage,
+    addProperty,
+    updateProperty,
+    deleteProperty,
+    loginAs,
+    logout,
+    submitBrokerRate,
+    approveBrokerRate,
+    rejectBrokerRate,
+    submitSellerListing,
+    updatePlatformSettings,
+    saveAllPlatformSettings,
+    resetPlatformSettings,
+    addSettingsLog
+  ]);
 }
 
 export function RealEstateProvider({ children }) {
@@ -704,8 +743,8 @@ export function RealEstateProvider({ children }) {
 
 export function useRealEstateStore() {
   const context = useContext(RealEstateContext);
-  if (context) {
-    return context;
+  if (!context) {
+    throw new Error('useRealEstateStore must be used within a <RealEstateProvider>');
   }
-  return useRealEstateStoreInternal();
+  return context;
 }

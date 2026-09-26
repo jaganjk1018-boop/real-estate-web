@@ -31,9 +31,8 @@ import {
   Compass,
   Activity
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import EMICalculatorWidget from '../../../components/EMICalculatorWidget';
-import VirtualTourModal from '../../../components/VirtualTourModal';
-import ScheduleVisitModal from '../../../components/ScheduleVisitModal';
 import PropertyCard from '../../../components/PropertyCard';
 import FloorPlanExplorer from '../../../components/FloorPlanExplorer';
 import InvestmentROISimulator from '../../../components/InvestmentROISimulator';
@@ -41,10 +40,13 @@ import PropertyLocationIntelligence from '../../../components/PropertyLocationIn
 import LandQuickIntelHUD from '../../../components/LandQuickIntelHUD';
 import LandDetailsDossier from '../../../components/LandDetailsDossier';
 import AreaMarketRateIntelligence from '../../../components/AreaMarketRateIntelligence';
-import AIPropertyValuationModal from '../../../components/AIPropertyValuationModal';
-import AIAreaAnalysisModal from '../../../components/AIAreaAnalysisModal';
-import AIInvestmentReportModal from '../../../components/AIInvestmentReportModal';
-import AIRecommendationModal from '../../../components/AIRecommendationModal';
+
+const VirtualTourModal = dynamic(() => import('../../../components/VirtualTourModal'), { ssr: false });
+const ScheduleVisitModal = dynamic(() => import('../../../components/ScheduleVisitModal'), { ssr: false });
+const AIPropertyValuationModal = dynamic(() => import('../../../components/AIPropertyValuationModal'), { ssr: false });
+const AIAreaAnalysisModal = dynamic(() => import('../../../components/AIAreaAnalysisModal'), { ssr: false });
+const AIInvestmentReportModal = dynamic(() => import('../../../components/AIInvestmentReportModal'), { ssr: false });
+const AIRecommendationModal = dynamic(() => import('../../../components/AIRecommendationModal'), { ssr: false });
 import { useRealEstateStore } from '../../../lib/store';
 import { formatPrice, formatNumber, formatLocalizedPrice, formatLocalizedArea } from '../../../lib/utils';
 
@@ -745,46 +747,59 @@ export default function PropertyDetailsPage({ params }) {
       )}
 
       {/* Modals */}
-      <VirtualTourModal
-        property={modalTourProperty}
-        isOpen={isTourOpen}
-        onClose={() => setIsTourOpen(false)}
-        onScheduleVisit={(p) => {
-          setIsTourOpen(false);
-          setModalVisitProperty(p || modalTourProperty);
-          setIsVisitOpen(true);
-        }}
-      />
+      {/* Modals - Lazy Loaded On-Demand */}
+      {isTourOpen && (
+        <VirtualTourModal
+          property={modalTourProperty}
+          isOpen={isTourOpen}
+          onClose={() => setIsTourOpen(false)}
+          onScheduleVisit={(p) => {
+            setIsTourOpen(false);
+            setModalVisitProperty(p || modalTourProperty);
+            setIsVisitOpen(true);
+          }}
+        />
+      )}
 
-      <ScheduleVisitModal
-        property={modalVisitProperty}
-        isOpen={isVisitOpen}
-        onClose={() => setIsVisitOpen(false)}
-      />
+      {isVisitOpen && (
+        <ScheduleVisitModal
+          property={modalVisitProperty}
+          isOpen={isVisitOpen}
+          onClose={() => setIsVisitOpen(false)}
+        />
+      )}
 
       {/* AI Feature Modals */}
-      <AIPropertyValuationModal
-        property={property}
-        isOpen={isValuationOpen}
-        onClose={() => setIsValuationOpen(false)}
-      />
+      {isValuationOpen && (
+        <AIPropertyValuationModal
+          property={property}
+          isOpen={isValuationOpen}
+          onClose={() => setIsValuationOpen(false)}
+        />
+      )}
 
-      <AIAreaAnalysisModal
-        property={property}
-        isOpen={isAreaAnalysisOpen}
-        onClose={() => setIsAreaAnalysisOpen(false)}
-      />
+      {isAreaAnalysisOpen && (
+        <AIAreaAnalysisModal
+          property={property}
+          isOpen={isAreaAnalysisOpen}
+          onClose={() => setIsAreaAnalysisOpen(false)}
+        />
+      )}
 
-      <AIInvestmentReportModal
-        property={property}
-        isOpen={isInvestmentOpen}
-        onClose={() => setIsInvestmentOpen(false)}
-      />
+      {isInvestmentOpen && (
+        <AIInvestmentReportModal
+          property={property}
+          isOpen={isInvestmentOpen}
+          onClose={() => setIsInvestmentOpen(false)}
+        />
+      )}
 
-      <AIRecommendationModal
-        isOpen={isMatchmakerOpen}
-        onClose={() => setIsMatchmakerOpen(false)}
-      />
+      {isMatchmakerOpen && (
+        <AIRecommendationModal
+          isOpen={isMatchmakerOpen}
+          onClose={() => setIsMatchmakerOpen(false)}
+        />
+      )}
 
     </div>
   );

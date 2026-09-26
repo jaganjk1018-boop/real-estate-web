@@ -2,20 +2,23 @@
 
 import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import './globals.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import LiveChatWidget from '../components/LiveChatWidget';
-import VirtualTourModal from '../components/VirtualTourModal';
-import AIRecommendationModal from '../components/AIRecommendationModal';
-import CompareModal from '../components/CompareModal';
-import ScheduleVisitModal from '../components/ScheduleVisitModal';
-import AuthModal from '../components/AuthModal';
-import ClientVaultModal from '../components/ClientVaultModal';
 import RouteProgressBar from '../components/RouteProgressBar';
 import { RealEstateProvider, useRealEstateStore } from '../lib/store';
 import ClientOnly from '../components/ClientOnly';
 import { Layers } from 'lucide-react';
+
+// Code-split heavy interactive modals & widgets for lightning performance and zero initial bloat
+const LiveChatWidget = dynamic(() => import('../components/LiveChatWidget'), { ssr: false });
+const VirtualTourModal = dynamic(() => import('../components/VirtualTourModal'), { ssr: false });
+const AIRecommendationModal = dynamic(() => import('../components/AIRecommendationModal'), { ssr: false });
+const CompareModal = dynamic(() => import('../components/CompareModal'), { ssr: false });
+const ScheduleVisitModal = dynamic(() => import('../components/ScheduleVisitModal'), { ssr: false });
+const AuthModal = dynamic(() => import('../components/AuthModal'), { ssr: false });
+const ClientVaultModal = dynamic(() => import('../components/ClientVaultModal'), { ssr: false });
 
 function RootLayoutContent({ children }) {
   const pathname = usePathname();
@@ -87,46 +90,58 @@ function RootLayoutContent({ children }) {
         {/* Global Floating Live Chat Support Widget */}
         {!isLoginPage && <LiveChatWidget />}
 
-        {/* Global Interactive Modals */}
-        <AIRecommendationModal
-          isOpen={isAIWizardOpen}
-          onClose={() => setIsAIWizardOpen(false)}
-        />
+        {/* Global Interactive Modals - Mounted on-demand for smooth memory management */}
+        {isAIWizardOpen && (
+          <AIRecommendationModal
+            isOpen={isAIWizardOpen}
+            onClose={() => setIsAIWizardOpen(false)}
+          />
+        )}
 
-        <CompareModal
-          isOpen={isCompareOpen}
-          onClose={() => setIsCompareOpen(false)}
-        />
+        {isCompareOpen && (
+          <CompareModal
+            isOpen={isCompareOpen}
+            onClose={() => setIsCompareOpen(false)}
+          />
+        )}
 
-        <ClientVaultModal
-          isOpen={isVaultOpen}
-          onClose={() => setIsVaultOpen(false)}
-          onOpenTour={(prop) => setActiveTourProperty(prop)}
-        />
+        {isVaultOpen && (
+          <ClientVaultModal
+            isOpen={isVaultOpen}
+            onClose={() => setIsVaultOpen(false)}
+            onOpenTour={(prop) => setActiveTourProperty(prop)}
+          />
+        )}
 
-        <AuthModal
-          isOpen={isAuthOpen}
-          onClose={() => setIsAuthOpen(false)}
-        />
+        {isAuthOpen && (
+          <AuthModal
+            isOpen={isAuthOpen}
+            onClose={() => setIsAuthOpen(false)}
+          />
+        )}
 
-        <VirtualTourModal
-          property={activeTourProperty}
-          isOpen={!!activeTourProperty}
-          onClose={() => setActiveTourProperty(null)}
-          onScheduleVisit={(prop) => {
-            setActiveTourProperty(null);
-            setActiveVisitProperty(prop);
-          }}
-        />
+        {activeTourProperty && (
+          <VirtualTourModal
+            property={activeTourProperty}
+            isOpen={!!activeTourProperty}
+            onClose={() => setActiveTourProperty(null)}
+            onScheduleVisit={(prop) => {
+              setActiveTourProperty(null);
+              setActiveVisitProperty(prop);
+            }}
+          />
+        )}
 
-        <ScheduleVisitModal
-          property={activeVisitProperty || properties?.[0]}
-          isOpen={isVIPBookingOpen || !!activeVisitProperty}
-          onClose={() => {
-            setIsVIPBookingOpen(false);
-            setActiveVisitProperty(null);
-          }}
-        />
+        {(isVIPBookingOpen || activeVisitProperty) && (
+          <ScheduleVisitModal
+            property={activeVisitProperty || properties?.[0]}
+            isOpen={isVIPBookingOpen || !!activeVisitProperty}
+            onClose={() => {
+              setIsVIPBookingOpen(false);
+              setActiveVisitProperty(null);
+            }}
+          />
+        )}
 
         {/* Floating Compare Notification Pill */}
         {compareList && compareList.length > 0 && (

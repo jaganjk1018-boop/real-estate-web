@@ -10,9 +10,22 @@ import {
   Compass,
   Box
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import { useRealEstateStore } from '../lib/store';
 import { formatLocalizedArea } from '../lib/utils';
-import ThreeDFloorPlanViewer from './ThreeDFloorPlanViewer';
+
+const ThreeDFloorPlanViewer = dynamic(
+  () => import('./ThreeDFloorPlanViewer'),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full min-h-[380px] bg-[#070c14] flex flex-col items-center justify-center text-center p-6 text-white rounded-2xl">
+        <div className="w-10 h-10 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin mb-3" />
+        <p className="text-xs font-serif tracking-widest text-[#D4AF37] uppercase">Rendering 3D Architectural Model...</p>
+      </div>
+    )
+  }
+);
 
 export default function FloorPlanExplorer({ property, onOpenTourRoom }) {
   const { unit } = useRealEstateStore();

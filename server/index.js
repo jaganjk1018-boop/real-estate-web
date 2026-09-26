@@ -63,8 +63,9 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// GET /api/properties
+// GET /api/properties (Cached for high concurrent read speed)
 app.get('/api/properties', (req, res) => {
+  res.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
   res.json({
     count: inMemoryProperties.length,
     properties: inMemoryProperties
@@ -73,8 +74,9 @@ app.get('/api/properties', (req, res) => {
 
 // POST /api/properties
 app.post('/api/properties', (req, res) => {
+  const entropy = Math.random().toString(36).substring(2, 7);
   const newProp = {
-    id: `prop-${Date.now()}`,
+    id: `prop-${Date.now()}-${entropy}`,
     ...req.body,
     createdAt: new Date().toISOString()
   };
@@ -84,8 +86,9 @@ app.post('/api/properties', (req, res) => {
 
 // POST /api/inquiries
 app.post('/api/inquiries', (req, res) => {
+  const entropy = Math.random().toString(36).substring(2, 8);
   const lead = {
-    id: `inq-${Date.now()}`,
+    id: `inq-${Date.now()}-${entropy}`,
     ...req.body,
     status: 'New',
     createdAt: new Date().toISOString()
